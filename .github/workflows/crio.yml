@@ -1,0 +1,34 @@
+name: CRI-O test
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'info'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      
+    - name: Install apt-get packages
+      run: |
+        sudo ACCEPT_EULA=Y apt-get update
+        sudo ACCEPT_EULA=Y apt-get upgrade
+        sudo ACCEPT_EULA=Y apt-get install git wget
+        
+    - name: Install CRI-O and crun
+      run: |
+        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/install.sh | bash
+        
+    - name: Run demo in CRI-O
+      run: |
+        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/simple_wasi_application.sh | bash
