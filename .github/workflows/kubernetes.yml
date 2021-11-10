@@ -31,7 +31,7 @@ jobs:
         
     - name: Installing and starting k8s
       run: |
-        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/install.sh | bash
+        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/install.sh | bash > k8s.log 2>&1
   
     - name: Sleep for 1200s
       run: sleep 1200s

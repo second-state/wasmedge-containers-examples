@@ -19,4 +19,4 @@ export PATH="/home/${USER}/kubernetes/third_party/etcd:${PATH}"
 sudo cp -rp ./kubernetes/third_party/etcd/etcd* /usr/local/bin/
 echo -e "Building and running k8s with CRI-O"
 sudo apt-get install -y build-essential
-nohup sudo -b CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='unix:///var/run/crio/crio.sock' ./kubernetes/hack/local-up-cluster.sh > k8s.log 2>&1
+sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='unix:///var/run/crio/crio.sock' ./kubernetes/hack/local-up-cluster.sh
