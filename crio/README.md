@@ -113,7 +113,7 @@ In this section, we will start off pulling this WebAssembly-based container
 image from Docker hub using CRI-O tools.
 
 ```bash
-crictl pull docke.io/hydai/wasm-wasi-example
+crictl pull docke.io/hydai/wasm-wasi-example:with-wasm-annotation
 ```
 
 Next, we need to create two simple configuration files that specifies how 
@@ -146,8 +146,8 @@ Starting the container would execute the WebAssembly program. You can see the ou
 # List the container, the state should be `Created`
 sudo crictl ps -a
 
-CONTAINER           IMAGE                           CREATED              STATE               NAME                     ATTEMPT             POD ID
-1d056e4a8a168       hydai/wasm-wasi-example:latest   About a minute ago   Created             podsandbox1-wasm-wasi   0                   7992e75df00cc
+CONTAINER           IMAGE                                          CREATED              STATE               NAME                     ATTEMPT             POD ID
+1d056e4a8a168       hydai/wasm-wasi-example:with-wasm-annotation   About a minute ago   Created             podsandbox1-wasm-wasi   0                   7992e75df00cc
 
 # Start the container
 sudo crictl start 1d056e4a8a168f0c76af122d42c98510670255b16242e81f8e8bce8bd3a4476f
@@ -157,13 +157,13 @@ sudo crictl start 1d056e4a8a168f0c76af122d42c98510670255b16242e81f8e8bce8bd3a447
 # If the container is not finishing its job, you will see the Running state
 # Because this example is very tiny. You may see Exited at this moment.
 sudo crictl ps -a
-CONTAINER           IMAGE                           CREATED              STATE               NAME                     ATTEMPT             POD ID
-1d056e4a8a168       hydai/wasm-wasi-example:latest   About a minute ago   Running             podsandbox1-wasm-wasi   0                   7992e75df00cc
+CONTAINER           IMAGE                                          CREATED              STATE               NAME                     ATTEMPT             POD ID
+1d056e4a8a168       hydai/wasm-wasi-example:with-wasm-annotation   About a minute ago   Running             podsandbox1-wasm-wasi   0                   7992e75df00cc
 
 # When the container is finished. You can see the state becomes Exited.
 sudo crictl ps -a
-CONTAINER           IMAGE                           CREATED              STATE               NAME                     ATTEMPT             POD ID
-1d056e4a8a168       hydai/wasm-wasi-example:latest   About a minute ago   Exited              podsandbox1-wasm-wasi   0                   7992e75df00cc
+CONTAINER           IMAGE                                          CREATED              STATE               NAME                     ATTEMPT             POD ID
+1d056e4a8a168       hydai/wasm-wasi-example:with-wasm-annotation   About a minute ago   Exited              podsandbox1-wasm-wasi   0                   7992e75df00cc
 
 # Check the container's logs
 sudo crictl logs 1d056e4a8a168f0c76af122d42c98510670255b16242e81f8e8bce8bd3a4476f

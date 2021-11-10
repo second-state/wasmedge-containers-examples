@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo crictl pull docker.io/hydai/wasm-wasi-example
+sudo crictl pull docker.io/hydai/wasm-wasi-example:with-wasm-annotation
 if [ -f sandbox_config.json ]
 then 
     rm -rf sandbox_config.json

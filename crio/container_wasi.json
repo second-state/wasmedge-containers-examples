@@ -3,7 +3,7 @@
     "name": "podsandbox1-wasm-wasi"
   },
   "image": {
-    "image": "hydai/wasm-wasi-example:latest"
+    "image": "hydai/wasm-wasi-example:with-wasm-annotation"
   },
   "args": [
     "/wasi_example_main.wasm", "50000000"
@@ -14,7 +14,8 @@
     "tier": "backend"
   },
   "annotations": {
-    "pod": "podsandbox1"
+    "pod": "podsandbox1",
+    "module.wasm.image/variant": "compat"
   },
   "log_path": "",
   "stdin": false,
