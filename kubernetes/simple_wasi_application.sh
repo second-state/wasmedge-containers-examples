@@ -8,4 +8,4 @@ sudo ./kubernetes/cluster/kubectl.sh
 # Check 
 sudo crictl pods
 sudo ./kubernetes/cluster/kubectl.sh cluster-info
-sudo ./kubernetes/cluster/kubectl.sh run -it --rm --restart=Never wasi-demo --image=hydai/wasm-wasi-example:with-wasm-annotation --annotations="module.wasm.image/variant=compat" /wasi_example_main.wasm 50000000
+sudo -b ./kubernetes/cluster/kubectl.sh run -it --rm --restart=Never wasi-demo --image=hydai/wasm-wasi-example:with-wasm-annotation --annotations="module.wasm.image/variant=compat" /wasi_example_main.wasm 50000000
