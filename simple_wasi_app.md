@@ -96,5 +96,5 @@ In the `pkg` folder:
 ```bash
 sudo buildah build --annotation "module.wasm.image/variant=compat" -t wasm-wasi-example .
 # You may need to use docker login to create the `~/.docker/config.json` for auth.
-sudo buildah push --authfile ~/.docker/config.json wasm-wasi-example docker://docker.io/hydai/wasm-wasi-example:buildah-annotation
+sudo buildah push --authfile ~/.docker/config.json wasm-wasi-example docker://docker.io/hydai/wasm-wasi-example:with-wasm-annotation
 ```
