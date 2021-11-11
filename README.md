@@ -7,6 +7,6 @@ everywhere Kubernetes runs!
 This repository contains scripts, tutorials, and GitHub Actions to demostrate
 how WasmEdge applications work side by side with Docker-like containers.
 
-* CRIO [How to](crio/README.md) | [Github Actions](.github/workflows/crio.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4172499552?check_suite_focus=true)
+* CRIO [How to](crio/README.md) | [Github Actions](.github/workflows/crio.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4172499552?check_suite_focus=true) | [Video demo](https://youtu.be/BlLCcAH6Hqo)
 
 * Kubernetes [How to](kubernetes/README.md) | [Github Actions](.github/workflows/kubernetes.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4172499556?check_suite_focus=true)
