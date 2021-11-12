@@ -44,7 +44,7 @@ CMD ["/wasi_example_main.wasm"]
 
 > 请注意，添加自定义注解仍然是 buildah 中的一个新功能。
 
-`crun` 容器运行时可以启动上述基于 WebAssembly 的容器镜像。 但是它需要容器镜像上的 `module.wasm.image/variant=compat` 注释来表明它是一个没有 guest 操作系统的 WebAssembly 应用程序。 可以在[官方crun repo]中找到详细信息(https://github.com/containers/crun/blob/main/docs/wasm-wasi-example.md).
+`crun` 容器运行时可以启动上述基于 WebAssembly 的容器镜像。 但是它需要容器镜像上的 `module.wasm.image/variant=compat` 注释来表明它是一个没有 guest 操作系统的 WebAssembly 应用程序。 可以在[官方crun repo](https://github.com/containers/crun/blob/main/docs/wasm-wasi-example.md)中找到详细信息。
 
 在容器镜像中添加 `module.wasm.image/variant=compat` 注释，你需要最新的 [buildah](https://buildah.io/)。目前，Docker 不支持此功能。 请按照[buildah的安装说明](https://github.com/containers/buildah/blob/main/install.md)构建最新的buildah二进制文件。
 
