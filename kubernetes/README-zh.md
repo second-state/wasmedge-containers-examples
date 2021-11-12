@@ -1,4 +1,4 @@
-# 在K8s中和 Docker 容器并列运行 WasmEdge 应用
+# 在 K8s 中让 WasmEdge 应用与 Docker 容器并列运行 
 
 ## 快速开始
 
