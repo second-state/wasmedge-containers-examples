@@ -8,18 +8,18 @@
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/install.sh | bash
 ```
 
-[simple_wasi_application.sh](simple_wasi_application.sh) 脚本显示如何从Docker Hub拉取 [a WebAssembly application](../simple_wasi_app.md) ，然后在 CRI-O 中将其作为容器化应用程序运行。
+[simple_wasi_application.sh](simple_wasi_application.sh) 脚本显示如何从Docker Hub拉取 [一个 WebAssembly 应用程序](../simple_wasi_app.md) ，然后在 CRI-O 中将其作为容器化应用程序运行。
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/simple_wasi_application.sh | bash
 ```
-您应该会在控制台日志中看到来自 WebAssembly 程序的结果。 [这是一个示例]()。
+您应该会在控制台日志中看到来自 WebAssembly 程序的结果。 [这是一个示例](https://github.com/second-state/wasmedge-containers-examples/runs/4186936596?check_suite_focus=true#step:4:40)。
 
-以下部分是上述demo的分步指引。
+以下是上述 demo 的分步指引。
 
 ## 安装 WasmEdge
 
-使用 [简单安装脚本](https://github.com/WasmEdge/WasmEdge/blob/master/docs/install.md) 来安装 WasmEdge。
+使用[简单安装脚本](https://github.com/WasmEdge/WasmEdge/blob/master/docs/install.md) 来安装 WasmEdge。
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -p /usr/local
