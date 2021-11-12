@@ -1,4 +1,4 @@
-# 一个 WASI WebAssembly app 的容器镜像
+# 一个 WASI WebAssembly 应用的容器镜像
 
 在本文中，我将向您展示如何为 WebAssembly 应用程序构建容器镜像。 然后可以通过 Kubernetes 生态系统工具启动和管理它，例如 CRI-O、Docker、crun 和 Kubernetes。
 
