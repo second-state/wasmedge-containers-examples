@@ -14,7 +14,7 @@ The [simple_wasi_application.sh](simple_wasi_application.sh) script shows how to
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/simple_wasi_application.sh | bash
 ```
 
-You should see results from the WebAssembly program printed in the console log. [Here is an example]().
+You should see results from the WebAssembly program printed in the console log. [Here is an example](https://github.com/second-state/wasmedge-containers-examples/runs/4186936596?check_suite_focus=true#step:4:40).
 
 The sections below are step-by-step instructions for the above demo.
 
