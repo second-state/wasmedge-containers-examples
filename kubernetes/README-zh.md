@@ -128,7 +128,7 @@ cd kubernetes
 git checkout v1.22.2
 cd ../
 
-# Install etcd with hack script in k8s
+# 在 k8s 中使用 hack 脚本安装 etcd
 sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='unix:///var/run/crio/crio.sock' ./hack/install-etcd.sh
 export PATH="/home/${USER}/kubernetes/third_party/etcd:${PATH}"
 sudo cp third_party/etcd/etcd* /usr/local/bin/
@@ -148,9 +148,9 @@ sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='
 ## 运行一个简单的 WebAssembly app
 
 最后我们可以使用 Kubernetes 运行一个简单的 WebAssembly程序。
-[一篇单独的文章](../simple_wasi_app.md) 解释如何编译、打包和发布 WebAssembly
+[一篇单独的文章](../simple_wasi_app.md)解释了如何编译、打包和发布 WebAssembly
 程序作为容器镜像到 Docker hub 中。
-本章节中，我们将从**另一个终端窗口**开始 并开始使用集群。
+本章节中，我们将从**另一个终端窗口**开始，并开始使用集群。
 
 ```bash
   export KUBERNETES_PROVIDER=local
