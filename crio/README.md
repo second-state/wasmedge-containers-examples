@@ -35,7 +35,7 @@ For other Linux distributions, please [see here](https://github.com/containers/c
 sudo apt update
 sudo apt install -y make git gcc build-essential pkgconf libtool \
    libsystemd-dev libprotobuf-c-dev libcap-dev libseccomp-dev libyajl-dev \
-   go-md2man libtool autoconf python3 automake systemctl
+   go-md2man libtool autoconf python3 automake
 ```
 
 Next, configure, build, and install a `crun` binary with WasmEdge support.
@@ -51,7 +51,7 @@ sudo make install
 
 ## Install CRI-O
 
-Use the following commands to install CRI-O on your system. 
+Use the following commands to install CRI-O on your system.
 
 ```bash
 export OS="xUbuntu_20.04"
@@ -113,12 +113,12 @@ In this section, we will start off pulling this WebAssembly-based container
 image from Docker hub using CRI-O tools.
 
 ```bash
-crictl pull docke.io/hydai/wasm-wasi-example:with-wasm-annotation
+crictl pull docker.io/hydai/wasm-wasi-example:with-wasm-annotation
 ```
 
-Next, we need to create two simple configuration files that specifies how 
+Next, we need to create two simple configuration files that specifies how
 CRI-O should run this WebAssembly image in a sandbox. We already have those
-two files [container_wasi.json](container_wasi.json) and [sandbox_config.json](sandbox_config.json). 
+two files [container_wasi.json](container_wasi.json) and [sandbox_config.json](sandbox_config.json).
 You can just download them to your local directory as follows.
 
 ```bash
@@ -126,7 +126,7 @@ wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/container_wasi.json
 ```
 
-Now you can use CRI-O to create a pod and a container using the specified configurations. 
+Now you can use CRI-O to create a pod and a container using the specified configurations.
 
 ```bash
 # Create the POD. Output will be different from example.
