@@ -4,7 +4,7 @@
 
 ## 先决条件
 
-> 如果只是希望将 wasm 字节码文件作为容器镜像进行测试，则可以跳过构建过程，只需 [在此处下载 wasm 文件] (https://github.com/second-state/wasm-learning/blob/master/cli/wasi/wasi_example_main.wasm).
+> 如果只是希望将 wasm 字节码文件作为容器镜像进行测试，则可以跳过构建过程，只需 [在此处下载 wasm 文件](https://github.com/second-state/wasm-learning/blob/master/cli/wasi/wasi_example_main.wasm).
 
 如果还未安装，请按照以下简单的说明 [安装 Rust](https://www.rust-lang.org/tools/install).
 
