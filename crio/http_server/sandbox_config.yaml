@@ -4,6 +4,3 @@ metadata:
 dns_config:
         servers:
                 - 8.8.8.8
-annotations:
-        module.wasm.image/variant: compat
-
