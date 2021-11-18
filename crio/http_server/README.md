@@ -64,7 +64,7 @@ Check the http_server ip with inspect and request the service with curl post
 HTTP_IP=`sudo crictl inspect $CONTAINER_ID | grep IP.0 | cut -d: -f 2 | cut -d'"' -f 2`
 gurl -d "param1=value1&param2=value2" -X POST http://$HTTP_IP:1234/post
 
-
 echo param1=value1&param2=value2
-```bash
+```
+
 If you can see the server echo back the value you input, then that's it!
