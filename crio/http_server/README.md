@@ -2,7 +2,7 @@
 
 ## Quick start
 
-Please following the CRI-O [../README.md](README.md) in the example to setup CRI-O and crun.
+Please following the CRI-O [crio/README.md](../README.md) in the example to setup CRI-O and crun.
 
 ## Run a simple WebAssembly app
 
@@ -16,12 +16,12 @@ crictl pull docker.io/avengermojo/http_server:with-wasm-annotation
 
 Next, we need to create two simple configuration files that specifies how
 CRI-O should run this WebAssembly image in a sandbox. We already have those
-two files [http_server_wasi.yaml](http_server_wasi.yml) and [sandbox_config.yml](sandbox_config.yaml).
+two files [http_server_wasi.yaml](http_server_wasi.yaml) and [sandbox_config.yaml](sandbox_config.yaml).
 You can just download them to your local directory as follows.
 
 ```bash
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/http_server/sandbox_config.yaml
-wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/http_sever/http_server_wasi.yaml
+wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/http_server/http_server_wasi.yaml
 ```
 
 Now you can use CRI-O to create a pod and a container using the specified configurations.
@@ -67,6 +67,4 @@ gurl -d "param1=value1&param2=value2" -X POST http://$HTTP_IP:1234/post
 
 echo param1=value1&param2=value2
 ```bash
-If you can see the server echo back the value you input.
-
-That's it!
+If you can see the server echo back the value you input, then that's it!
