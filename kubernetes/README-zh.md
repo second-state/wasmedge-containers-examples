@@ -1,8 +1,8 @@
-# 在 K8s 中让 WasmEdge 应用与 Docker 容器并列运行 
+# 在 K8s 中并列运行  WasmEdge 应用与 Docker 容器
 
 ## 快速开始
 
-你可以 在Ubuntu 20.04上使用 CRI-O [install.sh](../crio/install.sh) 脚本安装 CRI-O 并运行 `crun` 。
+你可以在 Ubuntu 20.04 上使用 CRI-O [install.sh](../crio/install.sh) 脚本安装 CRI-O 并运行 `crun` 。
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/install.sh | bash
@@ -14,7 +14,7 @@ wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-exa
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/install.sh | bash
 ``` 
 
-[simple_wasi_application.sh](simple_wasi_application.sh) 脚本显示如从Docker Hub何拉取 [一个 WebAssembly 应用](../simple_wasi_app.md) ，然后将其在K8s中作为容器化应用运行。
+[simple_wasi_application.sh](simple_wasi_application.sh) 脚本显示如何从 Docker Hub 拉取 [一个 WebAssembly 应用](../simple_wasi_app.md) ，然后将其在 K8s 中作为容器化应用运行。
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/simple_wasi_application.sh | bash
@@ -34,7 +34,7 @@ wget -qO- https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/insta
 
 ## 构建和安装 crun
 
-你需要一个支持 WasmEdge 的 `crun` 二进制文件。 目前，最简单的方法是自己从源代码构建它。 首先，让我们确保在您的 Ubuntu 20.04 上安装了 `crun` 依赖项。
+你需要一个支持 WasmEdge 的 `crun` 二进制文件。 目前，最简单的方法是自己从源代码构建它。 首先，让我们确保在你的 Ubuntu 20.04 上安装了 `crun` 依赖项。
 对于其他 Linux 发行版，请[见这里](https://github.com/containers/crun#readme).
 
 ```bash
@@ -81,7 +81,7 @@ systemctl start crio
 CRI-O 默认使用 `runc` runtime，我们需要将其配置为使用 `crun`。
 这是通过添加到两个配置文件来完成的。
 
-First, create a首先创建一个 `/etc/crio/crio.conf` 文件并添加下面几行作为内容。它告诉 CRI-O 默认使用 `crun` 。
+首先创建一个 `/etc/crio/crio.conf` 文件并添加下面几行作为内容。它告诉 CRI-O 默认使用 `crun` 。
 
 ```
 [crio.runtime]
@@ -104,7 +104,7 @@ runtime_type = "oci"
 runtime_root = "/run/crun"
 ```
 
-接下来，重启 CRI-O 来应用配置变化。
+接下来，重启 CRI-O 让修改过的配置生效.
 
 ```bash
 systemctl restart crio
@@ -112,8 +112,7 @@ systemctl restart crio
 
 ## 安装和启动 K8s
 
-从一个终端窗口运行如下命令。
-它为本地开发设置K8s。
+从一个终端窗口运行如下命令。它为本地开发设置K8s。
 
 ```bash
 # 安装 go
@@ -147,9 +146,7 @@ sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='
 
 ## 运行一个简单的 WebAssembly app
 
-最后我们可以使用 Kubernetes 运行一个简单的 WebAssembly程序。
-[一篇单独的文章](../simple_wasi_app.md)解释了如何编译、打包和发布 WebAssembly
-程序作为容器镜像到 Docker hub 中。
+最后我们可以使用 Kubernetes 运行一个简单的 WebAssembly程序。 [一篇单独的文章](../simple_wasi_app.md)解释了如何编译、打包和发布 WebAssembly 程序作为容器镜像到 Docker hub 中。
 本章节中，我们将从**另一个终端窗口**开始，并开始使用集群。
 
 ```bash
