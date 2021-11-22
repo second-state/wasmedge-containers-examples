@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "name": "http_server"
+  },
+  "image": {
+    "image": "avengermojo/http_server:with-wasm-annotation"
+  },
+  "args": [
+    "/http_server.wasm"
+  ],
+  "working_dir": "/",
+  "envs": [],
+  "tier": "backend",
+  "annotations": {
+    "module.wasm.image/variant": "compat"
+  }
+}
