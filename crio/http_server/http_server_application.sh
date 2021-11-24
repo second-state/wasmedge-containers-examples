@@ -25,6 +25,7 @@ echo -e "Checking logs ...\n\n"
 sudo crictl logs $CONTAINER_ID
 echo -e "\n\nTesting ...\n\n"
 HTTP_IP=`sudo crictl inspect $CONTAINER_ID | grep IP.0 | cut -d: -f 2 | cut -d'"' -f 2`
+echo -e "IP address is $HTTP_IP \n\n"
 curl -d "name=WasmEdge" -X POST http://$HTTP_IP:1234
 # Clean up
 echo -e "Cleaning up ..."
