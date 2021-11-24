@@ -1,5 +1,5 @@
 #!/bin/bash
-crictl pull docker.io/avengermojo/http_server:with-wasm-annotation
+sudo crictl pull docker.io/avengermojo/http_server:with-wasm-annotation
 if [ -f sandbox_config.json ]
 then 
     rm -rf sandbox_config.json
