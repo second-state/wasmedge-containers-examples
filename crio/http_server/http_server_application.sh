@@ -8,7 +8,7 @@ if [ -f http_server_wasi.json ]
 then 
     rm -rf http_server_wasi.json
 fi
-wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/http_server/sandbox_config.json
+wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/sandbox_config.json
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/http_server/http_server_wasi.json
 echo -e "Creating POD ..."
 POD_ID=$(sudo crictl runp sandbox_config.json)
