@@ -16,12 +16,12 @@ sudo crictl pull docker.io/avengermojo/http_server:with-wasm-annotation
 
 Next, we need to create two simple configuration files that specifies how
 CRI-O should run this WebAssembly image in a sandbox. We already have those
-two files [http_server_wasi.json](http_server_wasi.json) and [sandbox_config.json](../sandbox_config.json).
+two files [container_http_server.json](container_http_server.json) and [sandbox_config.json](../sandbox_config.json).
 You can just download them to your local directory as follows.
 
 ```bash
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/sandbox_config.json
-wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/http_server/http_server_wasi.json
+wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/http_server/container_http_server.json
 ```
 
 Now you can use CRI-O to create a pod and a container using the specified configurations.
@@ -34,7 +34,7 @@ POD_ID=`sudo crictl runp sandbox_config.json`
 echo $POD_ID
 
 # Create the container instance. Output will be different from example.
-CONTAINER_ID=`sudo crictl create $POD_ID http_server_wasi.json sandbox_config.json`
+CONTAINER_ID=`sudo crictl create $POD_ID container_http_server.json sandbox_config.json`
 
 # Echo the CONTAINER_ID to make sure it is completed
 echo $CONTAINER_ID
