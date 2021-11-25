@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo ctr i pull docker.io/avengermojo/http_server:with-wasm-annotation
 echo -e "Creating POD ..."
-sudo -b ctr run --rm --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat docker.io/avengermojo/http_server:with-wasm-annotation http-server-example /http_server.wasm
+nohup sudo -b ctr run --rm --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat docker.io/avengermojo/http_server:with-wasm-annotation http-server-example /http_server.wasm
 echo -e "Sleeping for 10 seconds"
 sleep 10
 echo -e "Awake again"
