@@ -27,8 +27,8 @@ jobs:
         
     - name: Install containerd and crun
       run: |
-        wget -qO- https://raw.githubusercontent.com/0xE282B0/wasmedge-containers-examples/main/containerd/install.sh | bash
+        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/install.sh | bash
         
     - name: Run demo in containerd
       run: |
-        wget -qO- https://raw.githubusercontent.com/0xE282B0/wasmedge-containers-examples/main/containerd/simple_wasi_application.sh | bash
+        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/simple_wasi_application.sh | bash
