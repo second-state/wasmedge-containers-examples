@@ -86,10 +86,25 @@ image from Docker hub using containerd tools.
 sudo ctr i pull docker.io/avengermojo/http_server:with-wasm-annotation
 ```
 
-We can run the example in just one line with ctr (the containerd cli) 
+We can run the example in just one line with ctr (the containerd cli).
+Notice that we are running the container with `--net-host`
+so that the HTTP server inside the WasmEdge container is accessible from the outside shell.
 
 ```bash
 sudo ctr run --rm --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat docker.io/avengermojo/http_server:with-wasm-annotation http-server-example /http_server.wasm
+```
+
+From another terminal, access the HTTP service inside the WasmEdge container on the local machine using the `curl` command.
+
+```bash
+curl -d "name=WasmEdge" -X POST http://127.0.0.1:1234
+echo: name=WasmEdge
+```
+
+In addition, you can check the status and get detailed information about the `http-server-example` container.
+
+```bash
+sudo ctr container info http-server-example
 ```
 
 That's it!
