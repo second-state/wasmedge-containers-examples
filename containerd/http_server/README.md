@@ -11,7 +11,7 @@ wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-exa
 The [http_server_application.sh](http_server_application.sh) script shows how to pull [a WebAssembly application](../../http_server_wasi_app.md) from Docker Hub, and then run it as a containerized application in containerd.
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/http_server_application.sh | bash
+wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/http_server/http_server_application.sh | bash
 ```
 
 The sections below are step-by-step instructions for the above demo.
