@@ -11,6 +11,8 @@ how WasmEdge applications work side by side with Docker-like containers.
 
 * CRIO [Quick start](crio/README.md) | [Github Actions](.github/workflows/crio.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4317457300?check_suite_focus=true#step:4:37) | [Video demo](https://youtu.be/BlLCcAH6Hqo)
 
+* Containerd [Quick start](containerd/README.md) | [Github Actions](.github/workflows/containerd.yml) | [Successful run](https://github.com/0xE282B0/wasmedge-containers-examples/actions/runs/1500095843check_suite_focus=true) 
+
 * Kubernetes [Quick start](kubernetes/README.md) | [Github Actions](.github/workflows/kubernetes.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4317457304?check_suite_focus=true#step:6:2999)
 
 ## Example: A HTTP microservice written in Rust and compiled into WebAssembly
