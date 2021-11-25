@@ -2,19 +2,19 @@
 
 ## Quick start
 
-You can use the [install.sh](install.sh) script to install CRI-O and `crun` on Ubuntu 20.04.
+You can use the [install.sh](install.sh) script to install containerd and `crun` on Ubuntu 20.04.
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/install.sh | bash
 ```
 
-The [simple_wasi_application.sh](simple_wasi_application.sh) script shows how to pull [a WebAssembly application](../simple_wasi_app.md) from Docker Hub, and then run it as a containerized application in CRI-O.
+The [simple_wasi_application.sh](simple_wasi_application.sh) script shows how to pull [a WebAssembly application](../simple_wasi_app.md) from Docker Hub, and then run it as a containerized application in containerd.
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/simple_wasi_application.sh | bash
 ```
 
-You should see results from the WebAssembly program printed in the console log. [Here is an example](https://github.com/0xE282B0/wasmedge-containers-examples/runs/4313666041?check_suite_focus=true#step:4:64).
+You should see results from the WebAssembly program printed in the console log. [Here is an example](https://github.com/second-state/wasmedge-containers-examples/runs/4321868699?check_suite_focus=true#step:4:63).
 
 The sections below are step-by-step instructions for the above demo.
 
@@ -94,7 +94,9 @@ We can run the example in just one line with ctr (the containerd cli)
 sudo ctr run --rm --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat docker.io/hydai/wasm-wasi-example:with-wasm-annotation wasm-example /wasi_example_main.wasm 50000000
 ```
 
-However, [nerdctl](https://github.com/containerd/nerdctl) is a way more convenient way to manage your containers and since it has the same commands as the docker cli you may are already used to it.
+## Bonus: nerdctl
+
+[nerdctl](https://github.com/containerd/nerdctl) is a way more convenient way to manage your containers and since it has the same commands as the docker cli you may are already used to it.
 
 ```bash
 # Install nerdctl
@@ -128,6 +130,5 @@ File content is This is in a file
 sudo ./nerdctl rm wasm-example
 wasm-example
 ```
-
 
 That's it!
