@@ -159,19 +159,19 @@ program as a container image to Docker hub.
 In this section, we will start from **another terminal window** and start using the cluster.
 
 ```bash
-  export KUBERNETES_PROVIDER=local
+export KUBERNETES_PROVIDER=local
 
-  cluster/kubectl.sh config set-cluster local --server=https://localhost:6443 --certificate-authority=/var/run/kubernetes/server-ca.crt
-  cluster/kubectl.sh config set-credentials myself --client-key=/var/run/kubernetes/client-admin.key --client-certificate=/var/run/kubernetes/client-admin.crt
-  cluster/kubectl.sh config set-context local --cluster=local --user=myself
-  cluster/kubectl.sh config use-context local
-  cluster/kubectl.sh
+cluster/kubectl.sh config set-cluster local --server=https://localhost:6443 --certificate-authority=/var/run/kubernetes/server-ca.crt
+cluster/kubectl.sh config set-credentials myself --client-key=/var/run/kubernetes/client-admin.key --client-certificate=/var/run/kubernetes/client-admin.crt
+cluster/kubectl.sh config set-context local --cluster=local --user=myself
+cluster/kubectl.sh config use-context local
+cluster/kubectl.sh
 ```
 
 Let's check the status to make sure that the cluster is running.
 
 ```bash
-sudo cluster/kubectl.sh cluster-info
+cluster/kubectl.sh cluster-info
 
 # Expected output
 Cluster "local" set.
@@ -193,10 +193,10 @@ In this section, we will start from **another terminal window** and start using 
 We can run the WebAssembly-based image from Docker Hub in the Kubernetes cluster.
 
 ```bash
-kubectl run --restart=Never http-server --image=avengermojo/http-server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}'
+cluster/kubectl.sh run --restart=Never http-server --image=avengermojo/http-server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}'
 pod/http-server created
 
-kubectl get pod --all-namespaces -o wide
+cluster/kubectl get pod --all-namespaces -o wide
 NAMESPACE     NAME                            READY   STATUS    RESTARTS   AGE    IP           NODE    NOMINATED NODE   READINESS GATES
 default       http-server                     1/1     Running   0          3s     <$host_ip>   k8s-1   <none>           <none>
 
