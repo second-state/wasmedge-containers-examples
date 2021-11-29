@@ -1,4 +1,4 @@
-# Run WasmEdge http server with CRIO in Kubernetes
+# Run WasmEdge http server with CRIO in Kubernetes 
 
 ## Quick start
 
@@ -8,19 +8,15 @@ You can use the CRI-O [install.sh](../crio/install.sh) script to install CRI-O a
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/install.sh | bash
 ```
 
-Next, install Kubernetes using the [following script](install.sh).
+Next, install Kubernetes using the default Ubuntu deb but bug fixing needed in the following section.
 
-```bash
-wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/install.sh | bash
-``` 
-
-The [http_server_wasi_application.sh](http_server_wasi_application.sh) script shows how to pull [a HTTP Server WebAssembly application](../http_server_wasi_app.md) from Docker Hub, and then run it as a containerized application in Kubernetes.
+The [http_server_wasi_application.sh](http_server_wasi_application.sh) script shows how to pull [a HTTP Server WebAssembly application](../../http_server_wasi_app.md) from Docker Hub, and then run it as a containerized application in Kubernetes.
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/http_server_wasi_application.sh | bash
 ```
 
-You should able to POST with curl and see results from the HTTP Server WebAssembly reply echo in the console. 
+You should able to POST with curl and see results from the HTTP Server WebAssembly reply echo in the console.
 
 ```bash
 
@@ -119,70 +115,76 @@ systemctl restart crio
 
 ## Install and start Kubernetes
 
-Run the following commands from a terminal window.
-It sets up Kubernetes for local development.
+Using the default Ubuntu package to install the kubeadm, kubelet and kubectl together
+in Ubuntu is a bit tricky. It has a dependencies conflict with the containernetworking-plugins.
+https://github.com/containers/podman/issues/5296
+
+So we need to edit the deb conflict out in order to finish the installation.
 
 ```bash
-# Install go
-wget https://golang.org/dl/go1.17.1.linux-amd64.tar.gz
-sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf go1.17.1.linux-amd64.tar.gz
-source /home/${USER}/.profile
 
-# Clone k8s
-git clone https://github.com/kubernetes/kubernetes.git
-cd kubernetes
-git checkout v1.22.2
-cd ../
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
 
-# Install etcd with hack script in k8s
-sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='unix:///var/run/crio/crio.sock' ./hack/install-etcd.sh
-export PATH="/home/${USER}/kubernetes/third_party/etcd:${PATH}"
-sudo cp third_party/etcd/etcd* /usr/local/bin/
-
-# After run the above command, you can find the following files: /usr/local/bin/etcd  /usr/local/bin/etcdctl  /usr/local/bin/etcdutl
-
-# Build and run k8s with CRI-O
-sudo apt-get install -y build-essential
-sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='unix:///var/run/crio/crio.sock' ./hack/local-up-cluster.sh
-
-... ...
-Local Kubernetes cluster is running. Press Ctrl-C to shut it down.
 ```
-Do NOT close your terminal window. Kubernetes is running!
+
+Here you will face a conflict with the containernetworking-plugins, depends on
+the crio version you installed before it maybe different from the example we are
+using here, please change the version accordingly.
+```bash
+
+cp -a /var/cache/apt/archives/containernetworking-plugins_100%3a1.0.0-1_amd64.deb /tmp/
+cd /tmp/
+mkdir container
+dpkg-deb -R containernetworking-plugins_100%3a1.0.0-1_amd64.deb container/
+sed -i -e '/^Version:/s/$/~conflictfree/' -e '/^Conflicts: kubernetes-cni/d' container/DEBIAN/control
+rm -f container/opt/cni/bin/*
+sudo dpkg -b container/ containernetworking-plugins_100%3a1.0.0-1_amd64_custom.deb
+sudo dpkg -i containernetworking-plugins_100%3a1.0.0-1_amd64_custom.deb
+sudo apt update -qq && sudo apt install -qq -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl containernetworking-plugins
+
+```
+
+
+Once you get all the binary ready you should able to get their version and prepare
+to use kudeadm to initilize the cluster.
+
+
+```bash
+wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/http_server/kubeadm-config.yaml | bash
+sudo kubeadm init --config kubeadm-config.yaml
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join <$host_ip>:6443 --token xxxxxxxxxxxxxxxxxxxxxxx \
+        --discovery-token-ca-cert-hash sha256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+For the completeness you can setup the pod network with e.g. funnel and adding
+another node as worker.
 
 ## Run a simple WebAssembly app
-
-Finally, we can run a simple WebAssembly program using Kubernetes.
-[A seperate article](../simple_wasi_app.md) explains how to compile, package, and publish the WebAssembly
-program as a container image to Docker hub.
-In this section, we will start from **another terminal window** and start using the cluster.
-
-```bash
-  export KUBERNETES_PROVIDER=local
-
-  cluster/kubectl.sh config set-cluster local --server=https://localhost:6443 --certificate-authority=/var/run/kubernetes/server-ca.crt
-  cluster/kubectl.sh config set-credentials myself --client-key=/var/run/kubernetes/client-admin.key --client-certificate=/var/run/kubernetes/client-admin.crt
-  cluster/kubectl.sh config set-context local --cluster=local --user=myself
-  cluster/kubectl.sh config use-context local
-  cluster/kubectl.sh
-```
-
-Let's check the status to make sure that the cluster is running.
-
-```bash
-sudo cluster/kubectl.sh cluster-info
-
-# Expected output
-Cluster "local" set.
-User "myself" set.
-Context "local" created.
-Switched to context "local".
-Kubernetes control plane is running at https://localhost:6443
-CoreDNS is running at https://localhost:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-```
 
 Finally, we can run a HTTP Server WebAssembly program using Kubernetes.
 [A seperate article](../http_server_wasi_app.md) explains how to compile, package, and publish the WebAssembly
@@ -190,18 +192,18 @@ program as a container image to Docker hub.
 In this section, we will start from **another terminal window** and start using the cluster.
 
 
-We can run the WebAssembly-based image from Docker Hub in the Kubernetes cluster.
+We can now run the WebAssembly-based image from Docker Hub in the Kubernetes cluster.
+By applying the [yaml script](./k8s-http_server.yaml) and run it.
 
 ```bash
-kubectl run --restart=Never http-server --image=avengermojo/http-server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}'
-pod/http-server created
+kubectl apply -f k8s-http_server.yaml
+k8s-http_server.yaml
 
 kubectl get pod --all-namespaces -o wide
 NAMESPACE     NAME                            READY   STATUS    RESTARTS   AGE    IP           NODE    NOMINATED NODE   READINESS GATES
 default       http-server                     1/1     Running   0          3s     <$host_ip>   k8s-1   <none>           <none>
 
 ```
-
 Now you can check the http_server ip with request with the curl POST as following
 
 
