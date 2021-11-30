@@ -149,11 +149,12 @@ sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='
 ... ...
 Local Kubernetes cluster is running. Press Ctrl-C to shut it down.
 ```
+
 Do NOT close your terminal window. Kubernetes is running!
 
-## Run a simple WebAssembly app
+## Run a WebAssembly-based HTTP server app
 
-Finally, we can run a simple WebAssembly program using Kubernetes.
+Finally, we can run a HTTP service using Kubernetes.
 [A seperate article](../simple_wasi_app.md) explains how to compile, package, and publish the WebAssembly
 program as a container image to Docker hub.
 In this section, we will start from **another terminal window** and start using the cluster.
@@ -184,13 +185,7 @@ CoreDNS is running at https://localhost:6443/api/v1/namespaces/kube-system/servi
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-Finally, we can run a HTTP Server WebAssembly program using Kubernetes.
-[A seperate article](../http_server_wasi_app.md) explains how to compile, package, and publish the WebAssembly
-program as a container image to Docker hub.
-In this section, we will start from **another terminal window** and start using the cluster.
-
-
-We can run the WebAssembly-based image from Docker Hub in the Kubernetes cluster.
+Next, run the WebAssembly-based image from Docker Hub in the Kubernetes cluster.
 
 ```bash
 cluster/kubectl.sh run --restart=Never http-server --image=avengermojo/http-server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}'
