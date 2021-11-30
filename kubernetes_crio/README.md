@@ -1,4 +1,4 @@
-# Run WasmEdge http server with CRIO in Kubernetes
+# Run WasmEdge apps side-by-side with Docker containers in Kubernetes
 
 ## Quick start
 
@@ -11,23 +11,16 @@ wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-exa
 Next, install Kubernetes using the [following script](install.sh).
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_crio/install.sh | bash
 ``` 
 
-The [http_server_wasi_application.sh](http_server_wasi_application.sh) script shows how to pull [a HTTP Server WebAssembly application](../http_server_wasi_app.md) from Docker Hub, and then run it as a containerized application in Kubernetes.
+The [simple_wasi_application.sh](simple_wasi_application.sh) script shows how to pull [a WebAssembly application](../simple_wasi_app.md) from Docker Hub, and then run it as a containerized application in Kubernetes.
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/http_server_wasi_application.sh | bash
+wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_crio/simple_wasi_application.sh | bash
 ```
 
-You should able to POST with curl and see results from the HTTP Server WebAssembly reply echo in the console. 
-
-```bash
-
-curl -d "name=WasmEdge" -X POST http://$HOST_IP:1234/post
-echo name=WasmEdge
-
-```
+You should see results from the WebAssembly prpogram printed in the console log. [Here is an example](https://github.com/second-state/wasmedge-containers-examples/runs/4186005677?check_suite_focus=true#step:6:3007).
 
 The sections below are step-by-step instructions for the above demo.
 
@@ -64,7 +57,7 @@ sudo make install
 
 ## Install CRI-O
 
-Use the following commands to install CRI-O on your system.
+Use the following commands to install CRI-O on your system. 
 
 ```bash
 export OS="xUbuntu_20.04"
@@ -149,30 +142,30 @@ sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='
 ... ...
 Local Kubernetes cluster is running. Press Ctrl-C to shut it down.
 ```
-
+  
 Do NOT close your terminal window. Kubernetes is running!
 
-## Run a WebAssembly-based HTTP server app
+## Run a simple WebAssembly app
 
-Finally, we can run a HTTP service using Kubernetes.
+Finally, we can run a simple WebAssembly program using Kubernetes.
 [A seperate article](../simple_wasi_app.md) explains how to compile, package, and publish the WebAssembly
 program as a container image to Docker hub.
 In this section, we will start from **another terminal window** and start using the cluster.
 
 ```bash
-export KUBERNETES_PROVIDER=local
+  export KUBERNETES_PROVIDER=local
 
-cluster/kubectl.sh config set-cluster local --server=https://localhost:6443 --certificate-authority=/var/run/kubernetes/server-ca.crt
-cluster/kubectl.sh config set-credentials myself --client-key=/var/run/kubernetes/client-admin.key --client-certificate=/var/run/kubernetes/client-admin.crt
-cluster/kubectl.sh config set-context local --cluster=local --user=myself
-cluster/kubectl.sh config use-context local
-cluster/kubectl.sh
+  cluster/kubectl.sh config set-cluster local --server=https://localhost:6443 --certificate-authority=/var/run/kubernetes/server-ca.crt
+  cluster/kubectl.sh config set-credentials myself --client-key=/var/run/kubernetes/client-admin.key --client-certificate=/var/run/kubernetes/client-admin.crt
+  cluster/kubectl.sh config set-context local --cluster=local --user=myself
+  cluster/kubectl.sh config use-context local
+  cluster/kubectl.sh
 ```
 
 Let's check the status to make sure that the cluster is running.
 
 ```bash
-cluster/kubectl.sh cluster-info
+sudo cluster/kubectl.sh cluster-info
 
 # Expected output
 Cluster "local" set.
@@ -185,25 +178,20 @@ CoreDNS is running at https://localhost:6443/api/v1/namespaces/kube-system/servi
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-Next, run the WebAssembly-based image from Docker Hub in the Kubernetes cluster.
+We can run the WebAssembly-based image from Docker Hub in the Kubernetes cluster.
 
 ```bash
-cluster/kubectl.sh run --restart=Never http-server --image=avengermojo/http-server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}'
-pod/http-server created
-
-cluster/kubectl get pod --all-namespaces -o wide
-NAMESPACE     NAME                            READY   STATUS    RESTARTS   AGE    IP           NODE    NOMINATED NODE   READINESS GATES
-default       http-server                     1/1     Running   0          3s     <$host_ip>   k8s-1   <none>           <none>
-
+sudo cluster/kubectl.sh run -it --rm --restart=Never wasi-demo --image=hydai/wasm-wasi-example:with-wasm-annotation --annotations="module.wasm.image/variant=compat" /wasi_example_main.wasm 50000000
+Random number: 401583443
+Random bytes: [192, 226, 162, 92, 129, 17, 186, 164, 239, 84, 98, 255, 209, 79, 51, 227, 103, 83, 253, 31, 78, 239, 33, 218, 68, 208, 91, 56, 37, 200, 32, 12, 106, 101, 241, 78, 161, 16, 240, 158, 42, 24, 29, 121, 78, 19, 157, 185, 32, 162, 95, 214, 175, 46, 170, 100, 212, 33, 27, 190, 139, 121, 121, 222, 230, 125, 251, 21, 210, 246, 215, 127, 176, 224, 38, 184, 201, 74, 76, 133, 233, 129, 48, 239, 106, 164, 190, 29, 118, 71, 79, 203, 92, 71, 68, 96, 33, 240, 228, 62, 45, 196, 149, 21, 23, 143, 169, 163, 136, 206, 214, 244, 26, 194, 25, 101, 8, 236, 247, 5, 164, 117, 40, 220, 52, 217, 92, 179]
+Printed from wasi: This is from a main function
+This is from a main function
+The env vars are as follows.
+The args are as follows.
+/wasi_example_main.wasm
+50000000
+File content is This is in a file
+pod "wasi-demo-2" deleted
 ```
 
-Now you can check the http_server ip with request with the curl POST as following
-
-
-```bash
-curl -d "name=WasmEdge" -X POST http://<$host_ip>:1234
-echo: name=WasmEdge
-
-```
-
-If you can see the server echo back the value you input, then that's it!
+That's it!

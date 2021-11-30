@@ -16,11 +16,7 @@ sleep 60
 
 sudo ./kubernetes/cluster/kubectl.sh get pod --all-namespaces -o wide
 
-HOST_IP=`sudo ./kubernetes/cluster/kubectl.sh get pod --all-namespaces -o wide | grep http-server | tr -s ' '  | cut -d ' ' -f  9`
-
-echo -e "Server is running at $HOST_IP"
-
 echo -e "\n\nTesting\n\n"
-curl -d "name=WasmEdge" -X POST http://$HOST_IP:1234
+curl -d "name=WasmEdge" -X POST http://127.0.0.1:1234
 echo -e "\n\nFinished\n\n"
 echo -e "Done!"

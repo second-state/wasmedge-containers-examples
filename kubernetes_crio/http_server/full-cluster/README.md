@@ -13,7 +13,7 @@ Next, install Kubernetes using the default Ubuntu deb but bug fixing needed in t
 The [http_server_wasi_application.sh](http_server_wasi_application.sh) script shows how to pull [a HTTP Server WebAssembly application](../../http_server_wasi_app.md) from Docker Hub, and then run it as a containerized application in Kubernetes.
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/http_server_wasi_application.sh | bash
+wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_crio/http_server_application.sh | bash
 ```
 
 You should able to POST with curl and see results from the HTTP Server WebAssembly reply echo in the console.

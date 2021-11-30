@@ -1,41 +1,41 @@
-# Run WasmEdge apps side-by-side with Docker containers in Kubernetes
+# 在 K8s 中并列运行  WasmEdge 应用与 Docker 容器
 
-## Quick start
+## 快速开始
 
-You can use the CRI-O [install.sh](../crio/install.sh) script to install CRI-O and `crun` on Ubuntu 20.04.
+你可以在 Ubuntu 20.04 上使用 CRI-O [install.sh](../crio/install.sh) 脚本安装 CRI-O 并运行 `crun` 。
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/install.sh | bash
 ```
 
-Next, install Kubernetes using the [following script](install.sh).
+接下来，使用[下面脚本](install.sh)安装 Kubernetes。
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_crio/install.sh | bash
 ``` 
 
-The [simple_wasi_application.sh](simple_wasi_application.sh) script shows how to pull [a WebAssembly application](../simple_wasi_app.md) from Docker Hub, and then run it as a containerized application in Kubernetes.
+[simple_wasi_application.sh](simple_wasi_application.sh) 脚本显示如何从 Docker Hub 拉取 [一个 WebAssembly 应用](../simple_wasi_app.md) ，然后将其在 K8s 中作为容器化应用运行。
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/simple_wasi_application.sh | bash
+wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_crio/simple_wasi_application.sh | bash
 ```
 
-You should see results from the WebAssembly prpogram printed in the console log. [Here is an example](https://github.com/second-state/wasmedge-containers-examples/runs/4186005677?check_suite_focus=true#step:6:3007).
+应该会看到控制台日志中打印的 WebAssembly 程序的结果。 [这里是一个示例](https://github.com/second-state/wasmedge-containers-examples/runs/4186005677?check_suite_focus=true#step:6:3007).
 
-The sections below are step-by-step instructions for the above demo.
+以下部分是上述 demo 的分步说明。
 
-## Install WasmEdge
+## 安装 WasmEdge
 
-Use the [simple install script](https://github.com/WasmEdge/WasmEdge/blob/master/docs/install.md) to install WasmEdge.
+使用 [simple install script](https://github.com/WasmEdge/WasmEdge/blob/master/docs/install.md) 安装 WasmEdge。
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -p /usr/local
 ```
 
-## Build and install crun
+## 构建和安装 crun
 
-You need a `crun` binary that supports WasmEdge. For now, the easiest approach is just built it yourself from source. First, let's make sure that `crun` dependencies are installed on your Ubuntu 20.04.
-For other Linux distributions, please [see here](https://github.com/containers/crun#readme).
+你需要一个支持 WasmEdge 的 `crun` 二进制文件。 目前，最简单的方法是自己从源代码构建它。 首先，让我们确保在你的 Ubuntu 20.04 上安装了 `crun` 依赖项。
+对于其他 Linux 发行版，请[见这里](https://github.com/containers/crun#readme).
 
 ```bash
 sudo apt update
@@ -44,7 +44,7 @@ sudo apt install -y make git gcc build-essential pkgconf libtool \
    go-md2man libtool autoconf python3 automake systemctl
 ```
 
-Next, configure, build, and install a `crun` binary with WasmEdge support.
+接下来，配置、构建和安装带有 WasmEdge 支持的 `crun` 二进制文件。
 
 ```bash
 git clone https://github.com/containers/crun
@@ -55,9 +55,9 @@ make
 sudo make install
 ```
 
-## Install CRI-O
+## 安装 CRI-O
 
-Use the following commands to install CRI-O on your system. 
+使用以下命令在您的系统上安装 CRI-O。
 
 ```bash
 export OS="xUbuntu_20.04"
@@ -76,19 +76,19 @@ apt-get install cri-o cri-o-runc cri-tools containernetworking-plugins
 systemctl start crio
 ```
 
-## Configure CRI-O
+## 配置 CRI-O
 
-CRI-O uses the `runc` runtime by default and we need to configure it to use `crun` instead.
-That is done by adding to two configuration files.
+CRI-O 默认使用 `runc` runtime，我们需要将其配置为使用 `crun`。
+这是通过添加到两个配置文件来完成的。
 
-First, create a `/etc/crio/crio.conf` file and add the following lines as its content. It tells CRI-O to use `crun` by default.
+首先创建一个 `/etc/crio/crio.conf` 文件并添加下面几行作为内容。它告诉 CRI-O 默认使用 `crun` 。
 
 ```
 [crio.runtime]
 default_runtime = "crun"
 ```
 
-The `crun` runtime is in turn defined in the `/etc/crio/crio.conf.d/01-crio-runc.conf` file.
+`crun` runtime 因此在 `/etc/crio/crio.conf.d/01-crio-runc.conf` 文件中定义。
 
 ```
 [crio.runtime.runtimes.runc]
@@ -104,19 +104,18 @@ runtime_type = "oci"
 runtime_root = "/run/crun"
 ```
 
-Next, restart CRI-O to apply the configuration changes.
+接下来，重启 CRI-O 让修改过的配置生效.
 
 ```bash
 systemctl restart crio
 ```
 
-## Install and start Kubernetes
+## 安装和启动 K8s
 
-Run the following commands from a terminal window.
-It sets up Kubernetes for local development.
+从一个终端窗口运行如下命令。它为本地开发设置K8s。
 
 ```bash
-# Install go
+# 安装 go
 wget https://golang.org/dl/go1.17.1.linux-amd64.tar.gz
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf go1.17.1.linux-amd64.tar.gz
@@ -128,29 +127,27 @@ cd kubernetes
 git checkout v1.22.2
 cd ../
 
-# Install etcd with hack script in k8s
+# 在 k8s 中使用 hack 脚本安装 etcd
 sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='unix:///var/run/crio/crio.sock' ./hack/install-etcd.sh
 export PATH="/home/${USER}/kubernetes/third_party/etcd:${PATH}"
 sudo cp third_party/etcd/etcd* /usr/local/bin/
 
-# After run the above command, you can find the following files: /usr/local/bin/etcd  /usr/local/bin/etcdctl  /usr/local/bin/etcdutl
+# 在运行上面的命令后，可以找到如下文件：/usr/local/bin/etcd  /usr/local/bin/etcdctl  /usr/local/bin/etcdutl
 
-# Build and run k8s with CRI-O
+# 用 CRI-O 构建和运行 k8s 
 sudo apt-get install -y build-essential
 sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='unix:///var/run/crio/crio.sock' ./hack/local-up-cluster.sh
 
 ... ...
-Local Kubernetes cluster is running. Press Ctrl-C to shut it down.
+本地 Kubernetes 集群正在运行。按 Ctrl-C 将其关闭。
 ```
   
-Do NOT close your terminal window. Kubernetes is running!
+不要关闭你的终端窗口。Kubernetes 正在运行！
 
-## Run a simple WebAssembly app
+## 运行一个简单的 WebAssembly app
 
-Finally, we can run a simple WebAssembly program using Kubernetes.
-[A seperate article](../simple_wasi_app.md) explains how to compile, package, and publish the WebAssembly
-program as a container image to Docker hub.
-In this section, we will start from **another terminal window** and start using the cluster.
+最后我们可以使用 Kubernetes 运行一个简单的 WebAssembly程序。 [一篇单独的文章](../simple_wasi_app.md)解释了如何编译、打包和发布 WebAssembly 程序作为容器镜像到 Docker hub 中。
+本章节中，我们将从**另一个终端窗口**开始，并开始使用集群。
 
 ```bash
   export KUBERNETES_PROVIDER=local
@@ -162,7 +159,7 @@ In this section, we will start from **another terminal window** and start using 
   cluster/kubectl.sh
 ```
 
-Let's check the status to make sure that the cluster is running.
+让我们查看状态确保集群正在运行。
 
 ```bash
 sudo cluster/kubectl.sh cluster-info
@@ -175,10 +172,10 @@ Switched to context "local".
 Kubernetes control plane is running at https://localhost:6443
 CoreDNS is running at https://localhost:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+进步一 debug 和检测集群问题，使用 'kubectl cluster-info dump'.
 ```
 
-We can run the WebAssembly-based image from Docker Hub in the Kubernetes cluster.
+我们可以从 Kubernetes 集群中的 Docker Hub 运行基于 WebAssembly 的镜像。
 
 ```bash
 sudo cluster/kubectl.sh run -it --rm --restart=Never wasi-demo --image=hydai/wasm-wasi-example:with-wasm-annotation --annotations="module.wasm.image/variant=compat" /wasi_example_main.wasm 50000000
@@ -194,4 +191,4 @@ File content is This is in a file
 pod "wasi-demo-2" deleted
 ```
 
-That's it!
+完成！
