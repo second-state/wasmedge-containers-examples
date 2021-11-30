@@ -14,6 +14,8 @@ sudo ./kubernetes/cluster/kubectl.sh run --restart=Never http-server --image=ave
 echo -e "Pulling image from the docker hub..."
 sleep 60
 
+sudo ./kubernetes/cluster/kubectl.sh get pod --all-namespaces -o wide
+
 HOST_IP=`sudo ./kubernetes/cluster/kubectl.sh get pod --all-namespaces -o wide | grep http-server | tr -s ' '  | cut -d ' ' -f  9`
 
 echo -e "Server is running at $HOST_IP"
