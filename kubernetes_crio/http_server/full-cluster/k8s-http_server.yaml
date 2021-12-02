@@ -14,3 +14,8 @@ spec:
     ports:
     - containerPort: 1234
       protocol: TCP
+  livenessProbe:
+    tcpSocket:
+      port: 1234
+    initialDelaySeconds: 3
+    periodSeconds: 30
