@@ -156,7 +156,7 @@ to use kudeadm to initilize the cluster.
 
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes/http_server/kubeadm-config.yaml | bash
+wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_crio/http_server/full-cluster/kubeadm-config.yaml
 sudo kubeadm init --config kubeadm-config.yaml
 
 Your Kubernetes control-plane has initialized successfully!

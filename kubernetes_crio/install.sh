@@ -14,6 +14,7 @@ cd kubernetes/
 git checkout v1.22.2
 cd ../
 echo -e "Installing etcd"
+sudo apt-get install -y net-tools
 sudo CGROUP_DRIVER=systemd CONTAINER_RUNTIME=remote CONTAINER_RUNTIME_ENDPOINT='unix:///var/run/crio/crio.sock' ./kubernetes/hack/install-etcd.sh
 export PATH="/home/${USER}/kubernetes/third_party/etcd:${PATH}"
 sudo cp -rp ./kubernetes/third_party/etcd/etcd* /usr/local/bin/
