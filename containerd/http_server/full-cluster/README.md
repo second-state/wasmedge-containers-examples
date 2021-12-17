@@ -99,7 +99,8 @@ First, create a `/etc/containerd/config.toml` file by running
 ```bash
 
 sudo mkdir -p /etc/containerd/
-sudo containerd config default > /etc/containerd/config.toml
+sudo bash -c "containerd config default > /etc/containerd/config.toml"
+
 
 ```
 
@@ -147,7 +148,7 @@ Replace the runc with crun
 Next, restart Containerd to apply the configuration changes.
 
 ```bash
-systemctl restart containerd
+sudo systemctl restart containerd
 ```
 
 ## Install and start Kubernetes
@@ -269,7 +270,7 @@ By applying the [yaml script](../../../kubernetes_crio/http_server/full-cluster/
 kubectl apply -f k8s-http_server.yaml
 k8s-http_server.yaml
 
-mubectl get pod --all-namespaces -o wide
+kubectl get pod --all-namespaces -o wide
 NAMESPACE     NAME                            READY   STATUS    RESTARTS   AGE    IP           NODE    NOMINATED NODE   READINESS GATES
 default       http-server                     1/1     Running   0          3s     <$host_ip>   k8s-1   <none>           <none>
 
