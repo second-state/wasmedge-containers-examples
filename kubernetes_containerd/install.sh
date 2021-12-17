@@ -1,3 +1,15 @@
+#!/bin/bash
+sudo apt-get update
+echo -e "Running Wasm in Kubernetes (k8s) ..."
+echo -e "Installing Go"
+wget https://golang.org/dl/go1.17.3.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf go1.17.3.linux-amd64.tar.gz
+echo -e "\nexport PATH=$PATH:/usr/local/go/bin" | tee -i -a /home/${USER}/.profile
+source /home/${USER}/.profile
+echo -e "Defaults        secure_path=\"/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"" | sudo tee -i /etc/sudoers.d/gofile
+
+echo -e "Cloning Kubernetes ..."
 git clone https://github.com/kubernetes/kubernetes.git
 cd kubernetes/
 git checkout v1.22.4
