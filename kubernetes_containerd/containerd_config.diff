@@ -1,0 +1,42 @@
+--- /etc/containerd/config.toml	2021-12-17 07:54:18.238425163 +0000
++++ /etc/containerd/config.toml.update	2021-12-17 07:51:37.978331813 +0000
+@@ -70,7 +70,7 @@
+       max_conf_num = 1
+ 
+     [plugins."io.containerd.grpc.v1.cri".containerd]
+-      default_runtime_name = "runc"
++      default_runtime_name = "crun"
+       disable_snapshot_annotations = true
+       discard_unpacked_layers = false
+       no_pivot = false
+@@ -89,17 +89,17 @@
+ 
+       [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+ 
+-        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
++        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.crun]
+           base_runtime_spec = ""
+           container_annotations = []
+-          pod_annotations = []
++          pod_annotations = ["*.wasm.*", "wasm.*", "module.wasm.image/*", "*.module.wasm.image", "module.wasm.image/variant.*"]
+           privileged_without_host_devices = false
+           runtime_engine = ""
+           runtime_root = ""
+           runtime_type = "io.containerd.runc.v2"
+ 
+-          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+-            BinaryName = ""
++          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.crun.options]
++            BinaryName = "crun"
+             CriuImagePath = ""
+             CriuPath = ""
+             CriuWorkPath = ""
+@@ -154,7 +154,7 @@
+ 
+   [plugins."io.containerd.runtime.v1.linux"]
+     no_shim = false
+-    runtime = "runc"
++    runtime = "crun"
+     runtime_root = ""
+     shim = "containerd-shim"
+     shim_debug = false
