@@ -9,7 +9,10 @@ sudo ./kubernetes/cluster/kubectl.sh
 sudo ./kubernetes/cluster/kubectl.sh cluster-info
 sudo ./kubernetes/cluster/kubectl.sh run --restart=Never http-server --image=avengermojo/http-server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}'
 
+echo -e "Wait 60s"
 sleep 60
+
+sudo ./kubernetes/cluster/kubectl.sh get pod --all-namespaces -o wide
 
 echo -e "\n\nTesting\n\n"
 curl -d "name=WasmEdge" -X POST http://127.0.0.1:1234
