@@ -16,6 +16,7 @@ sudo tar --no-overwrite-dir -C / -xzf cri-containerd-cni-${VERSION}-linux-amd64.
 sudo systemctl daemon-reload
 
 # change containerd conf to use crun as default
+sudo mkdir -p /etc/containerd/
 sudo bash -c "containerd config default > /etc/containerd/config.toml"
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/containerd_config.diff
 sudo patch -d/ -p0 < containerd_config.diff

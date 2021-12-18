@@ -7,5 +7,5 @@ sudo ./kubernetes/cluster/kubectl.sh config use-context local
 sudo ./kubernetes/cluster/kubectl.sh
 
 sudo ./kubernetes/cluster/kubectl.sh cluster-info
-sudo ./kubernetes/cluster/kubectl.sh run --restart=Never wasi-demo --image=hydai/wasm-wasi-example:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}' /wasi_example_main.wasm 50000000
+sudo ./kubernetes/cluster/kubectl.sh run -i --restart=Never wasi-demo --image=hydai/wasm-wasi-example:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}' /wasi_example_main.wasm 50000000
 
