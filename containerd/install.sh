@@ -35,10 +35,10 @@ rm -rf install.sh
 echo -e "Building and installing crun"
 sudo apt install -y make git gcc build-essential pkgconf libtool libsystemd-dev libprotobuf-c-dev libcap-dev libseccomp-dev libyajl-dev go-md2man libtool autoconf python3 automake
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/crun-patch.diff
-git clone https://github.com/containers/crun
-git apply ../crun-patch.diff
 
+git clone https://github.com/containers/crun
 cd crun
+git apply ../crun-patch.diff
 ./autogen.sh
 ./configure --with-wasmedge
 make
