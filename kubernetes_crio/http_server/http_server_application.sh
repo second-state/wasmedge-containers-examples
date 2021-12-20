@@ -9,7 +9,7 @@ sudo ./kubernetes/cluster/kubectl.sh config use-context local
 sudo ./kubernetes/cluster/kubectl.sh
 
 sudo ./kubernetes/cluster/kubectl.sh cluster-info
-sudo ./kubernetes/cluster/kubectl.sh run --restart=Never http-server --image=avengermojo/http_server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true, "containers": {"livenessProbe": {"initialDelaySeconds": 3, "periodSeconds": 30, "tcpSocket": {"port": 1234}}}}}' /http_server.wasm
+sudo ./kubernetes/cluster/kubectl.sh run --restart=Never http-server --image=avengermojo/http_server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true, "containers": [{"livenessProbe": {"initialDelaySeconds": 3, "periodSeconds": 30, "tcpSocket": {"port": 1234}}}]}}' /http_server.wasm
 # sudo ./kubernetes/cluster/kubectl.sh run -i --expose --port=1234 --restart=Never http-server --image=avengermojo/http_server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}' /http_server.wasm
 
 echo -e "Pulling image from the docker hub..."
