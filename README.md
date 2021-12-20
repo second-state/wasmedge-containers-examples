@@ -12,9 +12,11 @@ how WasmEdge applications work side by side with Docker-like containers.
 * CRIO [Quick start](crio/README.md) | [Github Actions](.github/workflows/crio.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4317457300?check_suite_focus=true#step:4:37) | [Video demo](https://youtu.be/BlLCcAH6Hqo)
 * Containerd [Quick start](containerd/README.md) | [Github Actions](.github/workflows/containerd.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4321868699?check_suite_focus=true#step:4:63) 
 * Kubernetes + CRI-O [Quick start](kubernetes_crio/README.md) | [Github Actions](.github/workflows/kubernetes-crio.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4317457304?check_suite_focus=true#step:6:2999)
+* Kubernetes + containerd [Quick start](kubernetes_containerd/README.md) | [Github Actions](.github/workflows/kubernetes-containerd.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4577323888?check_suite_focus=true#step:6:3002)
 
 ## Example: A HTTP microservice written in Rust and compiled into WebAssembly
 
 * CRI-O [Quick start](crio/http_server/README.md) | [Github Actions](.github/workflows/crio-server.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4317457313?check_suite_focus=true#step:4:54)
 * Containerd [Quick start](containerd/http_server/README.md) | [Github Actions](.github/workflows/containerd-server.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4328916842?check_suite_focus=true#step:4:86)
-* Kubernetes + CRI-O [Quick start](kubernetes_crio/http_server/README.md) | [Github Actions](.github/workflows/kubernetes-crio-server.yml) | [Successful run]()
+* Kubernetes + CRI-O [Quick start](kubernetes_crio/http_server/README.md) | [Github Actions](.github/workflows/kubernetes-crio-server.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4577323886?check_suite_focus=true#step:6:3041)
+* Kubernetes + containerd [Quick start](kubernetes_containerd/http_server/README.md) | [Github Actions](.github/workflows/kubernetes-containerd-server.yml) | [Successful run](https://github.com/second-state/wasmedge-containers-examples/runs/4577323891?check_suite_focus=true#step:6:3013)
