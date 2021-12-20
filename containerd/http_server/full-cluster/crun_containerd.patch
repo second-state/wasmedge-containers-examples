@@ -1,0 +1,16 @@
+index 0c5ebc2..0ea5066 100644
+--- crun/src/libcrun/container.c
++++ crun/src/libcrun/container.c
+@@ -1882,6 +1882,11 @@ container_init (void *args, char *notify_socket, int sync_socket, libcrun_error_
+ 
+   if (entrypoint_args->exec_func)
+     {
++// Some shims and manager on kubernetes still expect process image to be changed
++// with given executable in spec hence perform a blank execv to change process
++// image and ignore the output since we only want to care about exec_func
++// See: https://github.com/containers/crun/issues/798
++      execv (exec_path, (char*[]){NULL});
+       ret = entrypoint_args->exec_func (entrypoint_args->container, entrypoint_args->exec_func_arg, exec_path,
+                                         def->process->args);
+       _exit (ret);
+
