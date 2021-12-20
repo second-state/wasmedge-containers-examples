@@ -12,7 +12,7 @@ sudo ./kubernetes/cluster/kubectl.sh cluster-info
 # sudo ./kubernetes/cluster/kubectl.sh run -i --expose --port=1234 --restart=Never http-server --image=avengermojo/http_server:with-wasm-annotation --annotations="module.wasm.image/variant=compat" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}' /http_server.wasm
 
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_crio/http_server/k8s-http_server.yaml
-sudo ./kubernetes/cluster/kubectrl.sh apply -f k8s-http_server.yaml
+sudo ./kubernetes/cluster/kubectl.sh apply -f k8s-http_server.yaml
 
 echo -e "Pulling image from the docker hub..."
 sleep 60
