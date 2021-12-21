@@ -38,7 +38,7 @@ wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples
 
 git clone https://github.com/containers/crun
 cd crun
-git apply ../crun-patch.diff
+# git apply ../crun-patch.diff
 ./autogen.sh
 ./configure --with-wasmedge
 make
