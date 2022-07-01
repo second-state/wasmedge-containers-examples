@@ -83,7 +83,9 @@ sudo make install
 # sudo dpkg -i --force-overwrite crunw_1.0-wasmedge+dfsg-1_amd64.deb
 # rm -rf crunw_1.0-wasmedge+dfsg-1_amd64.deb
 # Write config
-echo -e "[crio.runtime]\ndefault_runtime = \"crun\"\n" | sudo tee -i /etc/crio/crio.conf
+#echo -e "[crio.runtime]\ndefault_runtime = \"crun\"\n" | sudo tee -i /etc/crio/crio.conf
+echo -e "[crio.runtime]\ndefault_runtime = \"crun\"\n[crio.image]\n
+    pause_image = \"registry.cn-hangzhou.aliyuncs.com/google-containers/pause-amd64:3.0\"\n" | sudo tee -i /etc/crio/crio.conf
 echo -e "\n# Add crun runtime here\n[crio.runtime.runtimes.crun]\nruntime_path = \"/usr/local/bin/crun\"\nruntime_type = \"oci\"\nruntime_root = \"/run/crun\"\n" | sudo tee -i -a /etc/crio/crio.conf.d/01-crio-runc.conf
 
 sudo systemctl restart crio
