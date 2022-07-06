@@ -1,4 +1,4 @@
-name: Containerd-Zh test
+name: CRI-O Wasmedge-0.9.0 Crun 1.4.5 test
 
 on:
   workflow_dispatch:
@@ -30,10 +30,10 @@ jobs:
           sudo ACCEPT_EULA=Y apt-get upgrade
           sudo ACCEPT_EULA=Y apt-get install git wget
 
-      - name: Install containerd and crun
+      - name: Install CRI-O and crun
         run: |
-          bash containerd/install-zh.sh 
+          bash crio/install-fixed.sh 
 
-      - name: Run demo in containerd
+      - name: Run demo in CRI-O
         run: |
-          bash containerd/simple_wasi_application.sh 
+          bash crio/simple_wasi_application.sh

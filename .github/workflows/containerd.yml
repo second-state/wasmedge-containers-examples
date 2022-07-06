@@ -20,7 +20,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Install apt-get packages
       run: |
         sudo ACCEPT_EULA=Y apt-get update
@@ -29,8 +31,8 @@ jobs:
         
     - name: Install containerd and crun
       run: |
-        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/install.sh | bash
+        bash containerd/install.sh 
         
     - name: Run demo in containerd
       run: |
-        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/simple_wasi_application.sh | bash
+        bash containerd/simple_wasi_application.sh 
