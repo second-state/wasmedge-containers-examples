@@ -32,7 +32,7 @@ jobs:
 
       - name: Install CRI-O and crun
         run: |
-          bash crio/install.sh 
+          bash crio/install.sh
 
       - name: Installing and starting k8s
         run: |
@@ -45,4 +45,4 @@ jobs:
       - name: Run WasmEdge in k8s
         run: |
           cat k8s.log
-          bash kubernetes_crio/simple_wasi_application.sh 
+          bash kubernetes_crio/simple_wasi_application.sh

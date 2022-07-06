@@ -21,18 +21,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
+        with:
+          fetch-depth: 0
 
       - name: Install apt-get packages
         run: |
           sudo ACCEPT_EULA=Y apt-get update
           sudo ACCEPT_EULA=Y apt-get upgrade
           sudo ACCEPT_EULA=Y apt-get install git wget
-        
+
       - name: Install containerd and crun
         run: |
-          bash containerd/install.sh 
+          bash containerd/install.sh
 
       - name: Installing and starting k8s
         run: |

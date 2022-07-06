@@ -32,8 +32,8 @@ jobs:
 
       - name: Install CRI-O and crun
         run: |
-          bash crio/install-zh.sh 
+          bash crio/install-zh.sh
 
       - name: Run demo in CRI-O
         run: |
-          bash crio/simple_wasi_application.sh 
+          bash crio/simple_wasi_application.sh

@@ -32,8 +32,8 @@ jobs:
 
       - name: Install containerd and crun
         run: |
-          bash containerd/install.sh 
+          bash containerd/install.sh
 
       - name: Run demo in containerd
         run: |
-          bash containerd/http_server/http_server_application.sh 
+          bash containerd/http_server/http_server_application.sh

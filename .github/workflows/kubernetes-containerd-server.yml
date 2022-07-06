@@ -45,4 +45,4 @@ jobs:
       - name: Run WasmEdge in k8s
         run: |
           cat k8s.log
-          bash kubernetes_containerd/http_server/http_server_application.sh 
+          bash kubernetes_containerd/http_server/http_server_application.sh
