@@ -29,7 +29,7 @@ then
 fi
 wget -q https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh
 sudo chmod a+x install.sh
-sudo ./install.sh --path="/usr/local" --version=0.9.1
+sudo ./install.sh --path="/usr/local"
 rm -rf install.sh
 
 echo -e "Building and installing crun"

@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Install apt-get packages
         run: |
@@ -29,8 +32,8 @@ jobs:
 
       - name: Install CRI-O and crun
         run: |
-          wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/install-zh.sh | bash
+          bash crio/install-zh.sh 
 
       - name: Run demo in CRI-O
         run: |
-          wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/crio/simple_wasi_application.sh | bash
+          bash crio/simple_wasi_application.sh 

@@ -20,26 +20,29 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      
-    - name: Install apt-get packages
-      run: |
-        sudo ACCEPT_EULA=Y apt-get update
-        sudo ACCEPT_EULA=Y apt-get upgrade
-        sudo ACCEPT_EULA=Y apt-get install git wget
+      - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+
+      - name: Install apt-get packages
+        run: |
+          sudo ACCEPT_EULA=Y apt-get update
+          sudo ACCEPT_EULA=Y apt-get upgrade
+          sudo ACCEPT_EULA=Y apt-get install git wget
         
-    - name: Install containerd and crun
-      run: |
-        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/install.sh | bash
-        
-    - name: Installing and starting k8s
-      run: |
-        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_containerd/install.sh | bash > k8s.log 2>&1
-  
-    - name: Sleep for 1200s
-      run: sleep 1200s
-      shell: bash
- 
-    - name: Run WasmEdge in k8s
-      run: |
-        cat k8s.log
-        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/kubernetes_containerd/simple_wasi_application.sh | bash
+      - name: Install containerd and crun
+        run: |
+          bash containerd/install.sh 
+
+      - name: Installing and starting k8s
+        run: |
+          bash kubernetes_containerd/install.sh > k8s.log 2>&1
+
+      - name: Sleep for 1200s
+        run: sleep 1200s
+        shell: bash
+
+      - name: Run WasmEdge in k8s
+        run: |
+          cat k8s.log
+          bash kubernetes_containerd/simple_wasi_application.sh

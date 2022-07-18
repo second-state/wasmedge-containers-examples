@@ -1,4 +1,4 @@
-name: k8s-crio  http server
+name: Containerd HTTP server Wasmedge-0.9.1 Crun-1.4.5 test
 
 on:
   workflow_dispatch:
@@ -21,8 +21,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
+        with:
+          fetch-depth: 0
 
       - name: Install apt-get packages
         run: |
@@ -30,19 +30,10 @@ jobs:
           sudo ACCEPT_EULA=Y apt-get upgrade
           sudo ACCEPT_EULA=Y apt-get install git wget
 
-      - name: Install CRI-O and crun
+      - name: Install containerd and crun
         run: |
-          bash crio/install.sh 
+          bash containerd/install-fixed.sh 
 
-      - name: Installing and starting k8s
+      - name: Run demo in containerd
         run: |
-          bash kubernetes_crio/install.sh  > k8s.log 2>&1
-
-      - name: Sleep for 1200s
-        run: sleep 1200s
-        shell: bash
-
-      - name: Run WasmEdge in k8s
-        run: |
-          cat k8s.log
-          bash kubernetes_crio/http_server/http_server_application.sh 
+          bash containerd/http_server/http_server_application.sh 

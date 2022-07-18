@@ -1,4 +1,4 @@
-name: k8s-crio  http server
+name: CRI-O HTTP server Wasmedge-0.9.1 Crun-1.4.5 test
 
 on:
   workflow_dispatch:
@@ -32,17 +32,8 @@ jobs:
 
       - name: Install CRI-O and crun
         run: |
-          bash crio/install.sh 
+          bash crio/install-fixed.sh 
 
-      - name: Installing and starting k8s
+      - name: Run demo in CRI-O
         run: |
-          bash kubernetes_crio/install.sh  > k8s.log 2>&1
-
-      - name: Sleep for 1200s
-        run: sleep 1200s
-        shell: bash
-
-      - name: Run WasmEdge in k8s
-        run: |
-          cat k8s.log
-          bash kubernetes_crio/http_server/http_server_application.sh 
+          bash crio/http_server/http_server_application.sh 
