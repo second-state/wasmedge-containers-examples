@@ -1,4 +1,4 @@
-name: CRI-O Wasmedge-0.9.0 Crun 1.4.5 test
+name: CRI-O WasmEdge-0.9.1 Crun-1.4.5 test
 
 on:
   workflow_dispatch:

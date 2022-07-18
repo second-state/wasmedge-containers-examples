@@ -20,17 +20,20 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      
-    - name: Install apt-get packages
-      run: |
-        sudo ACCEPT_EULA=Y apt-get update
-        sudo ACCEPT_EULA=Y apt-get upgrade
-        sudo ACCEPT_EULA=Y apt-get install git wget
-        
-    - name: Install containerd and crun
-      run: |
-        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/install.sh | bash
-        
-    - name: Run demo in containerd
-      run: |
-        wget -qO- https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/http_server/http_server_application.sh | bash
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install apt-get packages
+        run: |
+          sudo ACCEPT_EULA=Y apt-get update
+          sudo ACCEPT_EULA=Y apt-get upgrade
+          sudo ACCEPT_EULA=Y apt-get install git wget
+
+      - name: Install containerd and crun
+        run: |
+          bash containerd/install.sh 
+
+      - name: Run demo in containerd
+        run: |
+          bash containerd/http_server/http_server_application.sh 

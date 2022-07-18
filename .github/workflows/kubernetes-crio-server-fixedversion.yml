@@ -1,4 +1,4 @@
-name: k8s-crio  http server
+name: k8s-crio Wasmedge-0.9.1 Crun-1.4.5 http server
 
 on:
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Install CRI-O and crun
         run: |
-          bash crio/install.sh 
+          bash crio/install-fixed.sh 
 
       - name: Installing and starting k8s
         run: |
