@@ -19,7 +19,7 @@ sudo rm -rf "$DEST2"
 sudo touch "$DEST1"
 sudo touch "$DEST2"
 if [ -f "$DEST1" ]
-then 
+then
     echo "$ADD1" | sudo tee -i "$DEST1"
     echo "Success writing to $DEST1"
 else
@@ -28,7 +28,7 @@ else
 fi
 
 if [ -f "$DEST2" ]
-then 
+then
     echo "$ADD2" | sudo tee -i "$DEST2"
     echo "Success writing to $DEST2"
 else
@@ -38,7 +38,7 @@ fi
 echo -e "Installing wget"
 sudo apt install -y wget
 if [ -f Release.key ]
-then 
+then
     rm -rf Release.key
 fi
 echo -e "Fetching Release.key"
@@ -62,7 +62,7 @@ sudo apt install -y cri-tools
 sudo apt install -y containernetworking-plugins
 echo -e "Installing WasmEdge"
 if [ -f install.sh ]
-then 
+then
     rm -rf install.sh
 fi
 wget -q https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh
@@ -71,21 +71,15 @@ sudo ./install.sh --path="/usr/local"
 rm -rf install.sh
 echo -e "Building and installing crun"
 sudo apt install -y make git gcc build-essential pkgconf libtool libsystemd-dev libprotobuf-c-dev libcap-dev libseccomp-dev libyajl-dev go-md2man libtool autoconf python3 automake
+
 git clone https://github.com/containers/crun
 cd crun
 ./autogen.sh
 ./configure --with-wasmedge
 make
 sudo make install
-# sudo cp -f crun /usr/lib/cri-o-runc/sbin/runc
-
-# wget https://github.com/second-state/crunw/releases/download/1.0-wasmedge/crunw_1.0-wasmedge+dfsg-1_amd64.deb
-# sudo dpkg -i --force-overwrite crunw_1.0-wasmedge+dfsg-1_amd64.deb
-# rm -rf crunw_1.0-wasmedge+dfsg-1_amd64.deb
 # Write config
 echo -e "[crio.runtime]\ndefault_runtime = \"crun\"\n" | sudo tee -i /etc/crio/crio.conf
-#echo -e "[crio.runtime]\ndefault_runtime = \"crun\"\n[crio.image]\n
-#    pause_image = \"registry.cn-hangzhou.aliyuncs.com/google-containers/pause-amd64:3.0\"\n" | sudo tee -i /etc/crio/crio.conf
 echo -e "\n# Add crun runtime here\n[crio.runtime.runtimes.crun]\nruntime_path = \"/usr/local/bin/crun\"\nruntime_type = \"oci\"\nruntime_root = \"/run/crun\"\n" | sudo tee -i -a /etc/crio/crio.conf.d/01-crio-runc.conf
 
 sudo systemctl restart crio

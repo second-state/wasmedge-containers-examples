@@ -73,24 +73,17 @@ echo -e "Building and installing crun"
 sudo apt install -y make git gcc build-essential pkgconf libtool libsystemd-dev libprotobuf-c-dev libcap-dev libseccomp-dev libyajl-dev go-md2man libtool autoconf python3 automake
 
 echo -e "Downloading crun-1.4.5.tar.gz"
-sudo wget https://github.com/containers/crun/releases/download/1.4.5/crun-1.4.5.tar.gz
-sudo tar --no-overwrite-dir -xzf crun-1.4.5.tar.gz
-sudo mv crun-1.4.5 crun
+wget https://github.com/containers/crun/releases/download/1.4.5/crun-1.4.5.tar.gz
+tar --no-overwrite-dir -xzf crun-1.4.5.tar.gz
+mv crun-1.4.5 crun
 
 cd crun
-sudo ./autogen.sh
-sudo ./configure --with-wasmedge
-sudo make
+./autogen.sh
+./configure --with-wasmedge
+make
 sudo make install
-# sudo cp -f crun /usr/lib/cri-o-runc/sbin/runc
-
-# wget https://github.com/second-state/crunw/releases/download/1.0-wasmedge/crunw_1.0-wasmedge+dfsg-1_amd64.deb
-# sudo dpkg -i --force-overwrite crunw_1.0-wasmedge+dfsg-1_amd64.deb
-# rm -rf crunw_1.0-wasmedge+dfsg-1_amd64.deb
 # Write config
 echo -e "[crio.runtime]\ndefault_runtime = \"crun\"\n" | sudo tee -i /etc/crio/crio.conf
-#echo -e "[crio.runtime]\ndefault_runtime = \"crun\"\n[crio.image]\n
-#    pause_image = \"registry.cn-hangzhou.aliyuncs.com/google-containers/pause-amd64:3.0\"\n" | sudo tee -i /etc/crio/crio.conf
 echo -e "\n# Add crun runtime here\n[crio.runtime.runtimes.crun]\nruntime_path = \"/usr/local/bin/crun\"\nruntime_type = \"oci\"\nruntime_root = \"/run/crun\"\n" | sudo tee -i -a /etc/crio/crio.conf.d/01-crio-runc.conf
 
 sudo systemctl restart crio

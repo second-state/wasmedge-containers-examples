@@ -36,14 +36,13 @@ echo -e "Building and installing crun"
 sudo apt install -y make git gcc build-essential pkgconf libtool libsystemd-dev libprotobuf-c-dev libcap-dev libseccomp-dev libyajl-dev go-md2man libtool autoconf python3 automake
 
 echo -e "Downloading crun-1.4.5.tar.gz"
-sudo wget https://github.com/containers/crun/releases/download/1.4.5/crun-1.4.5.tar.gz
-sudo tar --no-overwrite-dir -xzf crun-1.4.5.tar.gz
-sudo mv crun-1.4.5 crun
-#git clone https://github.com/containers/crun
+wget https://github.com/containers/crun/releases/download/1.4.5/crun-1.4.5.tar.gz
+tar --no-overwrite-dir -xzf crun-1.4.5.tar.gz
+mv crun-1.4.5 crun
 cd crun
-sudo ./autogen.sh
-sudo ./configure --with-wasmedge
-sudo make
+./autogen.sh
+./configure --with-wasmedge
+make
 sudo make install
 
 # change containerd conf to use crun as default

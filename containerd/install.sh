@@ -24,7 +24,7 @@ sudo systemctl start containerd
 
 echo -e "Installing WasmEdge"
 if [ -f install.sh ]
-then 
+then
     rm -rf install.sh
 fi
 wget -q https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh
@@ -37,9 +37,9 @@ sudo apt install -y make git gcc build-essential pkgconf libtool libsystemd-dev 
 
 git clone https://github.com/containers/crun
 cd crun
-sudo ./autogen.sh
-sudo ./configure --with-wasmedge
-sudo make
+./autogen.sh
+./configure --with-wasmedge
+make
 sudo make install
 
 # change containerd conf to use crun as default
