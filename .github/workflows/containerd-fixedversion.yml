@@ -32,8 +32,8 @@ jobs:
 
       - name: Install containerd and crun
         run: |
-          bash containerd/install-fixed.sh 
+          bash containerd/install-fixed.sh
 
       - name: Run demo in containerd
         run: |
-          bash containerd/simple_wasi_application.sh 
+          bash containerd/simple_wasi_application.sh

@@ -32,7 +32,7 @@ jobs:
 
       - name: Install CRI-O and crun
         run: |
-          bash crio/install-fixed.sh 
+          bash crio/install-fixed.sh
 
       - name: Run demo in CRI-O
         run: |
