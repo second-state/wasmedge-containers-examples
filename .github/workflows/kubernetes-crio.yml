@@ -1,5 +1,9 @@
 name: k8s crio test
 
+concurrency:
+  group: k8s-crio-${{ github.head_ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -46,3 +50,8 @@ jobs:
         run: |
           cat k8s.log
           bash kubernetes_crio/simple_wasi_application.sh
+
+      - name: Display crun and wasmedge version
+        run: |
+          crun --version
+          wasmedge --version

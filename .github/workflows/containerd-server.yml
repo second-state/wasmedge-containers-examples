@@ -1,5 +1,9 @@
 name: Containerd HTTP server test
 
+concurrency:
+  group: containerd-server-${{ github.head_ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -37,3 +41,8 @@ jobs:
       - name: Run demo in containerd
         run: |
           bash containerd/http_server/http_server_application.sh
+
+      - name: Display crun and wasmedge version
+        run: |
+          crun --version
+          wasmedge --version

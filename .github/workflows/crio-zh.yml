@@ -1,5 +1,9 @@
 name: CRI-O-Zh test
 
+concurrency:
+  group: crio-zh-${{ github.head_ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -37,3 +41,8 @@ jobs:
       - name: Run demo in CRI-O
         run: |
           bash crio/simple_wasi_application.sh
+
+      - name: Display crun and wasmedge version
+        run: |
+          crun --version
+          wasmedge --version

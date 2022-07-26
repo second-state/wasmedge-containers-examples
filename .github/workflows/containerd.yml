@@ -1,5 +1,9 @@
 name: Containerd test
 
+concurrency:
+  group: containerd-${{ github.head_ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -20,20 +24,25 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-    - name: Install apt-get packages
-      run: |
-        sudo ACCEPT_EULA=Y apt-get update
-        sudo ACCEPT_EULA=Y apt-get upgrade
-        sudo ACCEPT_EULA=Y apt-get install git wget
+      - name: Install apt-get packages
+        run: |
+          sudo ACCEPT_EULA=Y apt-get update
+          sudo ACCEPT_EULA=Y apt-get upgrade
+          sudo ACCEPT_EULA=Y apt-get install git wget
 
-    - name: Install containerd and crun
-      run: |
-        bash containerd/install.sh
+      - name: Install containerd and crun
+        run: |
+          bash containerd/install.sh
 
-    - name: Run demo in containerd
-      run: |
-        bash containerd/simple_wasi_application.sh
+      - name: Run demo in containerd
+        run: |
+          bash containerd/simple_wasi_application.sh
+
+      - name: Display crun and wasmedge version
+        run: |
+          crun --version
+          wasmedge --version

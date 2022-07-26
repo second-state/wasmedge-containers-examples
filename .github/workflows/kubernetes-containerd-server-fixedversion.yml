@@ -1,5 +1,9 @@
 name: k8s-containerd Wasmedge-0.9.1 Crun-1.4.5  http server
 
+concurrency:
+  group: k8s-containerd-server-fixedversion-${{ github.head_ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -46,3 +50,8 @@ jobs:
         run: |
           cat k8s.log
           bash kubernetes_containerd/http_server/http_server_application.sh 
+
+      - name: Display crun and wasmedge version
+        run: |
+          crun --version
+          wasmedge --version
