@@ -1,5 +1,9 @@
 name: Containerd HTTP server test
 
+concurrency:
+  group: containerd-server-${{ github.head_ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -15,9 +19,42 @@ on:
     - cron: "0 0 */1 * *"
 
 jobs:
-  build:
-
+  containerd_server:
+    strategy:
+      matrix:
+        include:
+          - name: "WasmEdge latest release, Crun master"
+            latest: true
+            wasmedge: ""
+            crun: ""
+            zh: "FALSE"
+          - name: "WasmEdge 0.9.1, Crun 1.4.5"
+            latest: false
+            wasmedge: "0.9.1"
+            crun: "1.4.5"
+            zh: "FALSE"
+          - name: "WasmEdge 0.10.0, Crun 1.5"
+            latest: false
+            wasmedge: "0.10.0"
+            crun: "1.5"
+            zh: "FALSE"
+          - name: "WasmEdge latest release, Crun master, ZH"
+            latest: true
+            wasmedge: ""
+            crun: ""
+            zh: "TRUE"
+          - name: "WasmEdge 0.9.1, Crun 1.4.5, ZH"
+            latest: false
+            wasmedge: "0.9.1"
+            crun: "1.4.5"
+            zh: "TRUE"
+          - name: "WasmEdge 0.10.0, Crun 1.5, ZH"
+            latest: false
+            wasmedge: "0.10.0"
+            crun: "1.5"
+            zh: "TRUE"
     runs-on: ubuntu-20.04
+    name: ${{ matrix.name }}
 
     steps:
       - uses: actions/checkout@v2
@@ -30,10 +67,27 @@ jobs:
           sudo ACCEPT_EULA=Y apt-get upgrade
           sudo ACCEPT_EULA=Y apt-get install git wget
 
-      - name: Install containerd and crun
+      - name: Install containerd and crun (specified version)
+        if: ${{ ! matrix.latest }}
+        env:
+          WASMEDGE_VERSION: ${{ matrix.wasmedge }}
+          CRUN_VERSION: ${{ matrix.crun }}
+          ZH: ${{ matrix.zh }}
         run: |
-          bash containerd/install.sh 
+          bash containerd/install.sh --wasmedge=$WASMEDGE_VERSION --crun=$CRUN_VERSION --zh=$ZH
+
+      - name: Install containerd and crun (latest version)
+        if: ${{ matrix.latest }}
+        env:
+          ZH: ${{ matrix.zh }}
+        run: |
+          bash containerd/install.sh --zh=$ZH
 
       - name: Run demo in containerd
         run: |
-          bash containerd/http_server/http_server_application.sh 
+          bash containerd/http_server/http_server_application.sh
+
+      - name: Display crun and wasmedge version
+        run: |
+          crun --version
+          wasmedge --version
