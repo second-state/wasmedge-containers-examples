@@ -1,18 +1,21 @@
 {
   "metadata": {
-    "name": "http_server"
+    "name": "podsandbox1-wasm-wasi"
   },
   "image": {
-    "image": "wasmedge/example-wasi-http:latest"
+    "image": "wasmedge/example-wasi:compat"
   },
   "args": [
-    "/http_server.wasm"
+    "/wasi_example_main.wasm", "50000000"
   ],
   "working_dir": "/",
   "envs": [],
-  "tier": "backend",
+  "labels": {
+    "tier": "backend"
+  },
   "annotations": {
-    "module.wasm.image/variant": "compat-smart"
+    "pod": "podsandbox1",
+    "module.wasm.image/variant": "compat"
   },
   "log_path": "",
   "stdin": false,

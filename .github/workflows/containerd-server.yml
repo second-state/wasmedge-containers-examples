@@ -28,31 +28,43 @@ jobs:
             wasmedge: ""
             crun: ""
             zh: "FALSE"
+            tag: "latest"
+            variant: "compat-smart"
           - name: "WasmEdge 0.9.1, Crun 1.4.5"
             latest: false
             wasmedge: "0.9.1"
             crun: "1.4.5"
             zh: "FALSE"
+            tag: "compat"
+            variant: "compat"
           - name: "WasmEdge 0.10.0, Crun 1.5"
             latest: false
             wasmedge: "0.10.0"
             crun: "1.5"
             zh: "FALSE"
+            tag: "latest"
+            variant: "compat-smart"
           - name: "WasmEdge latest release, Crun master, ZH"
             latest: true
             wasmedge: ""
             crun: ""
             zh: "TRUE"
+            tag: "latest"
+            variant: "compat-smart"
           - name: "WasmEdge 0.9.1, Crun 1.4.5, ZH"
             latest: false
             wasmedge: "0.9.1"
             crun: "1.4.5"
             zh: "TRUE"
+            tag: "compat"
+            variant: "compat"
           - name: "WasmEdge 0.10.0, Crun 1.5, ZH"
             latest: false
             wasmedge: "0.10.0"
             crun: "1.5"
             zh: "TRUE"
+            tag: "latest"
+            variant: "compat-smart"
     runs-on: ubuntu-20.04
     name: ${{ matrix.name }}
 
@@ -84,8 +96,11 @@ jobs:
           bash containerd/install.sh --zh=$ZH
 
       - name: Run demo in containerd
+        env:
+          TAG: ${{ matrix.tag }}
+          VARIANT: ${{ matrix.variant }}
         run: |
-          bash containerd/http_server/http_server_application.sh
+          bash containerd/http_server/http_server_application.sh --tag=$TAG --variant=$VARIANT
 
       - name: Display crun and wasmedge version
         run: |

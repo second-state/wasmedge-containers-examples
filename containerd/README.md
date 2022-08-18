@@ -85,13 +85,13 @@ In this section, we will start off pulling this WebAssembly-based container
 image from Docker hub using containerd tools.
 
 ```bash
-sudo ctr i pull docker.io/hydai/wasm-wasi-example:with-wasm-annotation
+sudo ctr i pull docker.io/wasmedge/example-wasi:latest
 ```
 
 We can run the example in just one line with ctr (the containerd cli) 
 
 ```bash
-sudo ctr run --rm --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat docker.io/hydai/wasm-wasi-example:with-wasm-annotation wasm-example /wasi_example_main.wasm 50000000
+sudo ctr run --rm --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat-smart docker.io/wasmedge/example-wasi:latest wasm-example /wasi_example_main.wasm 50000000 Hello WasmEdge
 ```
 
 ## Bonus: nerdctl
@@ -104,8 +104,8 @@ export NERD_VERSION="0.14.0"
 wget -O- https://github.com/containerd/nerdctl/releases/download/v$NERD_VERSION/nerdctl-$NERD_VERSION-linux-amd64.tar.gz |tar xzf -
 
 # Create the POD. Output will be different from example.
-sudo ./nerdctl run -d --runtime crun --label module.wasm.image/variant=compat --name wasm-example docker.io/hydai/wasm-wasi-example:with-wasm-annotation
-WARN[0000] kernel support for cgroup blkio weight missing, weight discarded 
+sudo ./nerdctl run -d --runtime crun --label module.wasm.image/variant=compat-smart --name wasm-example docker.io/wasmedge/example-wasi:latest
+WARN[0000] kernel support for cgroup blkio weight missing, weight discarded
 495ac5a521052bd42dca109f549140d573ad9d114ce3e1d15896156430b95c8f
 
 # Check the container status again.
@@ -113,7 +113,7 @@ WARN[0000] kernel support for cgroup blkio weight missing, weight discarded
 # Because this example is very tiny. You may see Exited at this moment.
 sudo ./nerdctl ps -a
 CONTAINER ID    IMAGE                                                     COMMAND                   CREATED          STATUS                      PORTS    NAMES
-495ac5a52105    docker.io/hydai/wasm-wasi-example:with-wasm-annotation    "/wasi_example_main.…"    8 seconds ago    Exited (0) 8 seconds ago             wasm-example    
+495ac5a52105    docker.io/wasmedge/example-wasi:latest                    "/wasi_example_main.…"    8 seconds ago    Exited (0) 8 seconds ago             wasm-example
 
 # Check the container's logs
 sudo ./nerdctl logs wasm-example

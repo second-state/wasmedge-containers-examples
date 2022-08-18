@@ -83,7 +83,7 @@ In this section, we will start off pulling this WebAssembly-based container
 image from Docker hub using containerd tools.
 
 ```bash
-sudo ctr i pull docker.io/avengermojo/http_server:with-wasm-annotation
+sudo ctr i pull docker.io/wasmedge/example-wasi-http:latest
 ```
 
 We can run the example in just one line with ctr (the containerd cli).
@@ -91,7 +91,7 @@ Notice that we are running the container with `--net-host`
 so that the HTTP server inside the WasmEdge container is accessible from the outside shell.
 
 ```bash
-sudo ctr run --rm --net-host --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat docker.io/avengermojo/http_server:with-wasm-annotation http-server-example /http_server.wasm
+sudo ctr run --rm --net-host --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat-smart docker.io/wasmedge/example-wasi-http http-server-example /http_server.wasm
 ```
 
 From another terminal, access the HTTP service inside the WasmEdge container on the local machine using the `curl` command.
