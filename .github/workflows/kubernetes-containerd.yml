@@ -21,6 +21,7 @@ on:
 jobs:
   k8s_containerd:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: "WasmEdge latest release, Crun master"

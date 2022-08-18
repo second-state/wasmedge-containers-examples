@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x # Enable verbose for the debug information
 export KUBERNETES_PROVIDER=local
 export WASM_IMAGE=docker.io/wasmedge/example-wasi-http
 export WASM_IMAGE_TAG=latest
