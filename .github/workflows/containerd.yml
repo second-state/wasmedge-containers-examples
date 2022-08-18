@@ -100,9 +100,22 @@ jobs:
           TAG: ${{ matrix.tag }}
           VARIANT: ${{ matrix.variant }}
         run: |
-          bash containerd/simple_wasi_application.sh --tag=$TAG --variant=$VARIANT
+          bash containerd/simple_wasi_application.sh --tag=$TAG --variant=$VARIANT > dump.log 2>&1
 
       - name: Display crun and wasmedge version
         run: |
           crun --version
           wasmedge --version
+
+      - name: Dump the log of execution
+        run: |
+          cat dump.log
+
+      - name: Check the result
+        run: |
+          if grep -q "Printed from wasi: This is from a main function" dump.log; then
+            echo -e "Execution Success!"
+          else
+            echo -e "Execution Fail! Please check the above log for details"
+            exit 1
+          fi
