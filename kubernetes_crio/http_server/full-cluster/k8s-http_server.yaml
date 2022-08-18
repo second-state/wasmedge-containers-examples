@@ -9,7 +9,7 @@ spec:
   hostNetwork: true
   containers:
   - name: http-server
-    image: avengermojo/http_server:with-wasm-annotation
+    image: wasmedge/example-wasi-http:latest
     command: [ "/http_server.wasm" ]
     ports:
     - containerPort: 1234

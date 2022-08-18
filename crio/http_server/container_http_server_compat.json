@@ -3,7 +3,7 @@
     "name": "http_server"
   },
   "image": {
-    "image": "wasmedge/example-wasi-http:latest"
+    "image": "wasmedge/example-wasi-http:compat"
   },
   "args": [
     "/http_server.wasm"
@@ -12,7 +12,7 @@
   "envs": [],
   "tier": "backend",
   "annotations": {
-    "module.wasm.image/variant": "compat-smart"
+    "module.wasm.image/variant": "compat"
   },
   "log_path": "",
   "stdin": false,

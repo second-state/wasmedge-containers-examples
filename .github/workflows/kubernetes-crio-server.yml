@@ -1,4 +1,4 @@
-name: k8s-crio  http server
+name: k8s-crio http server
 
 concurrency:
   group: k8s-crio-server-${{ github.head_ref }}
@@ -21,6 +21,7 @@ on:
 jobs:
   k8s_crio_server:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: "WasmEdge latest release, Crun master"
@@ -28,31 +29,37 @@ jobs:
             wasmedge: ""
             crun: ""
             zh: "FALSE"
+            tag: "k8s-http_server.yaml"
           - name: "WasmEdge 0.9.1, Crun 1.4.5"
             latest: false
             wasmedge: "0.9.1"
             crun: "1.4.5"
             zh: "FALSE"
+            tag: "k8s-http_server-compat.yaml"
           - name: "WasmEdge 0.10.0, Crun 1.5"
             latest: false
             wasmedge: "0.10.0"
             crun: "1.5"
             zh: "FALSE"
+            tag: "k8s-http_server.yaml"
           - name: "WasmEdge latest release, Crun master, ZH"
             latest: true
             wasmedge: ""
             crun: ""
             zh: "TRUE"
+            tag: "k8s-http_server.yaml"
           - name: "WasmEdge 0.9.1, Crun 1.4.5, ZH"
             latest: false
             wasmedge: "0.9.1"
             crun: "1.4.5"
             zh: "TRUE"
+            tag: "k8s-http_server-compat.yaml"
           - name: "WasmEdge 0.10.0, Crun 1.5, ZH"
             latest: false
             wasmedge: "0.10.0"
             crun: "1.5"
             zh: "TRUE"
+            tag: "k8s-http_server.yaml"
     runs-on: ubuntu-20.04
     name: ${{ matrix.name }}
 
@@ -91,12 +98,30 @@ jobs:
         run: sleep 1200s
         shell: bash
 
-      - name: Run WasmEdge in k8s
+      - name: Dump the log of k8s setup
         run: |
           cat k8s.log
-          bash kubernetes_crio/http_server/http_server_application.sh
+
+      - name: Run WasmEdge in k8s
+        env:
+          TAG: ${{ matrix.tag }}
+        run: |
+          bash kubernetes_crio/http_server/http_server_application.sh --tag=$TAG > dump.log 2>&1
 
       - name: Display crun and wasmedge version
         run: |
           crun --version
           wasmedge --version
+
+      - name: Dump the log of execution
+        run: |
+          cat dump.log
+
+      - name: Check the result
+        run: |
+          if grep -q "echo: name=WasmEdge" dump.log; then
+            echo -e "Execution Success!"
+          else
+            echo -e "Execution Fail! Please check the above log for details"
+            exit 1
+          fi

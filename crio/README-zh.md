@@ -143,7 +143,7 @@ sudo crictl create $POD_ID container_wasi.json sandbox_config.json
 sudo crictl ps -a
 
 CONTAINER           IMAGE                                          CREATED              STATE               NAME                     ATTEMPT             POD ID
-1d056e4a8a168       hydai/wasm-wasi-example:with-wasm-annotation   About a minute ago   Created             podsandbox1-wasm-wasi   0                   7992e75df00cc
+1d056e4a8a168       wasmedge/example-wasi:latest                   About a minute ago   Created             podsandbox1-wasm-wasi   0                   7992e75df00cc
 
 # 启动容器
 sudo crictl start 1d056e4a8a168f0c76af122d42c98510670255b16242e81f8e8bce8bd3a4476f
@@ -155,12 +155,12 @@ sudo crictl start 1d056e4a8a168f0c76af122d42c98510670255b16242e81f8e8bce8bd3a447
 
 sudo crictl ps -a
 CONTAINER           IMAGE                                          CREATED              STATE               NAME                     ATTEMPT             POD ID
-1d056e4a8a168       hydai/wasm-wasi-example:with-wasm-annotation   About a minute ago   Running             podsandbox1-wasm-wasi   0                   7992e75df00cc
+1d056e4a8a168       wasmedge/example-wasi:latest                   About a minute ago   Running             podsandbox1-wasm-wasi   0                   7992e75df00cc
 
 # 当容器完成了以后，状态会显示为 Exited。
 sudo crictl ps -a
 CONTAINER           IMAGE                                          CREATED              STATE               NAME                     ATTEMPT             POD ID
-1d056e4a8a168       hydai/wasm-wasi-example:with-wasm-annotation   About a minute ago   Exited              podsandbox1-wasm-wasi   0                   7992e75df00cc
+1d056e4a8a168       wasmedge/example-wasi:latest                   About a minute ago   Exited              podsandbox1-wasm-wasi   0                   7992e75df00cc
 
 # 查看容器的log
 sudo crictl logs 1d056e4a8a168f0c76af122d42c98510670255b16242e81f8e8bce8bd3a4476f

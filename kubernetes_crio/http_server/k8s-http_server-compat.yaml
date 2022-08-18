@@ -4,12 +4,12 @@ metadata:
   name: http-server
   namespace: default
   annotations:
-    module.wasm.image/variant: compat-smart
+    module.wasm.image/variant: compat
 spec:
   hostNetwork: true
   containers:
   - name: http-server
-    image: wasmedge/example-wasi-http:latest
+    image: wasmedge/example-wasi-http:compat
     command: [ "/http_server.wasm" ]
     ports:
     - containerPort: 1234

@@ -11,7 +11,7 @@ In this section, we will start off pulling the http_server WebAssembly-based con
 image from Docker hub using CRI-O tools.
 
 ```bash
-sudo crictl pull docker.io/avengermojo/http_server:with-wasm-annotation
+sudo crictl pull docker.io/wasmedge/example-wasi-http:latest
 ```
 
 Next, we need to create two simple configuration files that specifies how
