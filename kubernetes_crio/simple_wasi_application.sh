@@ -2,11 +2,16 @@
 export KUBERNETES_PROVIDER=local
 export WASM_IMAGE=docker.io/wasmedge/example-wasi
 export WASM_IMAGE_TAG=latest
+export VARIANT=compat-smart
 
 for opt in "$@"; do
   case $opt in
     --tag=*)
       export WASM_IMAGE_TAG="${opt#*=}"
+      shift
+      ;;
+    --variant=*)
+      export VARIANT="${opt#*=}"
       shift
       ;;
     *)
@@ -22,4 +27,6 @@ sudo ./kubernetes/cluster/kubectl.sh
 # Check 
 sudo crictl pods
 sudo ./kubernetes/cluster/kubectl.sh cluster-info
-sudo ./kubernetes/cluster/kubectl.sh run -it --rm --restart=Never wasi-demo --image=$WASM_IMAGE:$WASM_IMAGE_TAG --annotations="module.wasm.image/variant=compat-smart" /wasi_example_main.wasm 50000000
+sudo ./kubernetes/cluster/kubectl.sh run -it --rm --restart=Never wasi-demo \
+	--image=$WASM_IMAGE:$WASM_IMAGE_TAG \
+	--annotations="module.wasm.image/variant=$VARIANT" /wasi_example_main.wasm 50000000

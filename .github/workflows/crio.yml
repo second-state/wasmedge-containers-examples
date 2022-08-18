@@ -29,37 +29,43 @@ jobs:
             wasmedge: ""
             crun: ""
             zh: "FALSE"
-            tag: "container_wasi.json"
+            tag: "latest"
+            config: "container_wasi.json"
           - name: "WasmEdge 0.9.1, Crun 1.4.5"
             latest: false
             wasmedge: "0.9.1"
             crun: "1.4.5"
             zh: "FALSE"
-            tag: "container_wasi_compat.json"
+            tag: "compat"
+            config: "container_wasi_compat.json"
           - name: "WasmEdge 0.10.0, Crun 1.5"
             latest: false
             wasmedge: "0.10.0"
             crun: "1.5"
             zh: "FALSE"
-            tag: "container_wasi.json"
+            tag: "latest"
+            config: "container_wasi.json"
           - name: "WasmEdge latest release, Crun master, ZH"
             latest: true
             wasmedge: ""
             crun: ""
             zh: "TRUE"
-            tag: "container_wasi.json"
+            tag: "latest"
+            config: "container_wasi.json"
           - name: "WasmEdge 0.9.1, Crun 1.4.5, ZH"
             latest: false
             wasmedge: "0.9.1"
             crun: "1.4.5"
             zh: "TRUE"
-            tag: "container_wasi_compat.json"
+            tag: "compat"
+            config: "container_wasi_compat.json"
           - name: "WasmEdge 0.10.0, Crun 1.5, ZH"
             latest: false
             wasmedge: "0.10.0"
             crun: "1.5"
             zh: "TRUE"
-            tag: "container_wasi.json"
+            tag: "latest"
+            config: "container_wasi.json"
     runs-on: ubuntu-20.04
     name: CRI-O with ${{ matrix.name }}
 
@@ -93,8 +99,9 @@ jobs:
       - name: Run demo in CRI-O
         env:
           TAG: ${{ matrix.tag }}
+          CONFIG: ${{ matrix.config }}
         run: |
-          bash crio/simple_wasi_application.sh --tag=$TAG > dump.log 2>&1
+          bash crio/simple_wasi_application.sh --tag=$TAG --config=$CONFIG > dump.log 2>&1
 
       - name: Display crun and wasmedge version
         run: |

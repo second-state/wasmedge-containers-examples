@@ -8,6 +8,10 @@ export CONTAINER_CONFIG_NAME=container_http_server.json
 for opt in "$@"; do
   case $opt in
     --tag=*)
+      export WASM_IMAGE_TAG="${opt#*=}"
+      shift
+      ;;
+    --config=*)
       export CONTAINER_CONFIG_NAME="${opt#*=}"
       shift
       ;;
