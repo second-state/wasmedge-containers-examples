@@ -66,6 +66,8 @@ jobs:
             zh: "TRUE"
             tag: "latest"
             variant: "compat-smart"
+        exclude:
+          - zh: "TRUE"
     runs-on: ubuntu-20.04
     name: ${{ matrix.name }}
 
