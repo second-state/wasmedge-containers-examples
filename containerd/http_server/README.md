@@ -52,7 +52,7 @@ sudo make install
 Use the following commands to install containerd on your system.
 
 ```bash
-export VERSION="1.5.7"
+export VERSION="1.6.8"
 echo -e "Version: $VERSION"
 echo -e "Installing libseccomp2 ..."
 sudo apt install -y libseccomp2

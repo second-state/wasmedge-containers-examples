@@ -61,7 +61,7 @@ sudo make install
 
 ```bash
 export OS="xUbuntu_20.04"
-export VERSION="1.21"
+export VERSION="1.25"
 apt update
 apt install -y libseccomp2 || sudo apt update -y libseccomp2
 echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
@@ -124,7 +124,7 @@ source /home/${USER}/.profile
 # Clone k8s
 git clone https://github.com/kubernetes/kubernetes.git
 cd kubernetes
-git checkout v1.22.2
+git checkout v1.25.0
 cd ../
 
 # 在 k8s 中使用 hack 脚本安装 etcd
