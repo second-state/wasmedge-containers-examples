@@ -21,7 +21,7 @@ done
 echo -e "Starting installation ..."
 sudo apt update
 export OS="xUbuntu_20.04"
-export VERSION="1.21"
+export VERSION="1.25"
 echo -e "OS: $OS"
 echo -e "Version: $VERSION"
 echo -e "Installing libseccomp2 ..."
