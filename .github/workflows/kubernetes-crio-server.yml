@@ -23,44 +23,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        crun: ["1.5", "1.6", "1.7", "1.7.1", "1.7.2"]
+        wasmedge: ["0.10.0", "0.10.1", "0.11.0", "0.11.1", "0.11.2"]
+        latest: [false]
+        tag: ["k8s-http_server.yaml"]
         include:
           - name: "WasmEdge latest release, Crun master"
             latest: true
             wasmedge: ""
             crun: ""
-            tag: "k8s-http_server.yaml"
-          - name: "WasmEdge 0.9.1, Crun 1.4.5"
-            latest: false
-            wasmedge: "0.9.1"
-            crun: "1.4.5"
-            tag: "k8s-http_server-compat.yaml"
-          - name: "WasmEdge 0.10.0, Crun 1.5"
-            latest: false
-            wasmedge: "0.10.0"
-            crun: "1.5"
-            tag: "k8s-http_server.yaml"
-          - name: "WasmEdge 0.11.2, Crun 1.6"
-            latest: false
-            wasmedge: "0.11.2"
-            crun: "1.6"
-            tag: "k8s-http_server.yaml"
-          - name: "WasmEdge 0.11.2, Crun 1.7"
-            latest: false
-            wasmedge: "0.11.2"
-            crun: "1.7"
-            tag: "k8s-http_server.yaml"
-          - name: "WasmEdge 0.11.2, Crun 1.7.1"
-            latest: false
-            wasmedge: "0.11.2"
-            crun: "1.7.1"
-            tag: "k8s-http_server.yaml"
-          - name: "WasmEdge 0.11.2, Crun 1.7.2"
-            latest: false
-            wasmedge: "0.11.2"
-            crun: "1.7.2"
-            tag: "k8s-http_server.yaml"
     runs-on: ubuntu-20.04
-    name: ${{ matrix.name }}
+    name: WasmEdge:${{ matrix.wasmedge }},crun:${{ matrix.crun }}
 
     steps:
       - uses: actions/checkout@v2
