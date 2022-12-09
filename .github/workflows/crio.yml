@@ -33,6 +33,8 @@ jobs:
             latest: true
             wasmedge: ""
             crun: ""
+            tag: "latest"
+            config: "container_wasi.json"
         exclude:
           - crun: "1.5" # 1.5 uses libwasmedge.so, which is changed to libwasmedge.so.0 after WasmEdge 0.11.0 release
             wasmedge: "0.11.0"

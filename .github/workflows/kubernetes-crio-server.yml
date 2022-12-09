@@ -26,12 +26,14 @@ jobs:
         crun: ["1.5", "1.6", "1.7", "1.7.1", "1.7.2"]
         wasmedge: ["0.10.0", "0.10.1", "0.11.0", "0.11.1", "0.11.2"]
         latest: [false]
-        tag: ["k8s-http_server.yaml"]
+        config: ["k8s-http_server.yaml"]
         include:
           - name: "WasmEdge latest release, Crun master"
             latest: true
             wasmedge: ""
             crun: ""
+            config: "k8s-http_server.yaml"
+            variant: "compat-smart"
         exclude:
           - crun: "1.5" # 1.5 uses libwasmedge.so, which is changed to libwasmedge.so.0 after WasmEdge 0.11.0 release
             wasmedge: "0.11.0"
@@ -96,9 +98,9 @@ jobs:
 
       - name: Run WasmEdge in k8s
         env:
-          TAG: ${{ matrix.tag }}
+          CONFIG: ${{ matrix.config }}
         run: |
-          bash kubernetes_crio/http_server/http_server_application.sh --tag=$TAG > dump.log 2>&1
+          bash kubernetes_crio/http_server/http_server_application.sh --config=$CONFIG > dump.log 2>&1
 
       - name: Display crun and wasmedge version
         run: |
