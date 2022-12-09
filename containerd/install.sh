@@ -38,7 +38,7 @@ sudo systemctl daemon-reload
 sudo mkdir -p /etc/containerd/
 sudo bash -c "containerd config default > /etc/containerd/config.toml"
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/containerd_config.diff
-sudo cat containerd_config.diff | patch -d/ -p0
+sudo patch -d/ -p0 < containerd_config.diff
 sudo systemctl start containerd
 
 echo -e "Installing WasmEdge"

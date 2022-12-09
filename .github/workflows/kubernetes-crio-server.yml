@@ -30,8 +30,8 @@ jobs:
         include:
           - name: "WasmEdge latest release, Crun master"
             latest: true
-            wasmedge: ""
-            crun: ""
+            wasmedge: "latest"
+            crun: "latest"
             config: "k8s-http_server.yaml"
             variant: "compat-smart"
         exclude:

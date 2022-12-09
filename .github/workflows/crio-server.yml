@@ -31,8 +31,8 @@ jobs:
         include:
           - name: "WasmEdge latest release, Crun master"
             latest: true
-            wasmedge: ""
-            crun: ""
+            wasmedge: "latest"
+            crun: "latest"
             tag: "latest"
             config: "container_http_server.json"
         exclude:
