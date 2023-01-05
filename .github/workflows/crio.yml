@@ -23,8 +23,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        crun: ["1.5", "1.6", "1.7", "1.7.1", "1.7.2"]
-        wasmedge: ["0.10.0", "0.10.1", "0.11.0", "0.11.1", "0.11.2"]
+        crun: ["1.6", "1.7", "1.7.1", "1.7.2"]
+        wasmedge: ["0.11.0", "0.11.1", "0.11.2"]
         config: ["container_wasi.json"]
         tag: ["latest"]
         latest: [false]
@@ -36,34 +36,12 @@ jobs:
             tag: "latest"
             config: "container_wasi.json"
         exclude:
-          - crun: "1.5" # 1.5 uses libwasmedge.so, which is changed to libwasmedge.so.0 after WasmEdge 0.11.0 release
-            wasmedge: "0.11.0"
-          - crun: "1.5" # 1.5 uses libwasmedge.so, which is changed to libwasmedge.so.0 after WasmEdge 0.11.0 release
-            wasmedge: "0.11.1"
-          - crun: "1.5" # 1.5 uses libwasmedge.so, which is changed to libwasmedge.so.0 after WasmEdge 0.11.0 release
-            wasmedge: "0.11.2"
-          - crun: "1.6" # 1.6 uses libwasmedge.so.0, but WasmEdge provides libwasmedge.so before 0.11.0 release
-            wasmedge: "0.10.0"
-          - crun: "1.6" # 1.6 uses libwasmedge.so.0, but WasmEdge provides libwasmedge.so before 0.11.0 release
-            wasmedge: "0.10.1"
-          - crun: "1.7" # 1.7 uses libwasmedge.so.0, but WasmEdge provides libwasmedge.so before 0.11.0 release
-            wasmedge: "0.10.0"
-          - crun: "1.7" # 1.7 uses libwasmedge.so.0, but WasmEdge provides libwasmedge.so before 0.11.0 release
-            wasmedge: "0.10.1"
-          - crun: "1.7.1" # 1.7.1 uses libwasmedge.so.0, but WasmEdge provides libwasmedge.so before 0.11.0 release
-            wasmedge: "0.10.0"
-          - crun: "1.7.1" # 1.7.1 uses libwasmedge.so.0, but WasmEdge provides libwasmedge.so before 0.11.0 release
-            wasmedge: "0.10.1"
           - crun: "1.7.1" # 1.7.1 introduce the new apparmor setting which will fail wasm custom handler
             wasmedge: "0.11.0"
           - crun: "1.7.1" # 1.7.1 introduce the new apparmor setting which will fail wasm custom handler
             wasmedge: "0.11.1"
           - crun: "1.7.1" # 1.7.1 introduce the new apparmor setting which will fail wasm custom handler
             wasmedge: "0.11.2"
-          - crun: "1.7.2" # 1.7.2 uses libwasmedge.so.0, but WasmEdge provides libwasmedge.so before 0.11.0 release
-            wasmedge: "0.10.0"
-          - crun: "1.7.2" # 1.7.2 uses libwasmedge.so.0, but WasmEdge provides libwasmedge.so before 0.11.0 release
-            wasmedge: "0.10.1"
           - crun: "1.7.2" # 1.7.2 introduce the new apparmor setting which will fail wasm custom handler
             wasmedge: "0.11.0"
           - crun: "1.7.2" # 1.7.2 introduce the new apparmor setting which will fail wasm custom handler
