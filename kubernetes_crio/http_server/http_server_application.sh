@@ -1,13 +1,12 @@
 #!/bin/bash
 
 export KUBERNETES_PROVIDER=local
-export WASM_IMAGE_TAG=latest
 export CONFIG_FOLDER=$( dirname -- "$0"; )
 export CONFIG_NAME=k8s-http_server.yaml
 
 for opt in "$@"; do
   case $opt in
-    --tag=*)
+    --config=*)
       export CONFIG_NAME="${opt#*=}"
       shift
       ;;
@@ -23,17 +22,16 @@ sudo ./kubernetes/cluster/kubectl.sh config use-context local
 sudo ./kubernetes/cluster/kubectl.sh
 
 sudo ./kubernetes/cluster/kubectl.sh cluster-info
-# sudo ./kubernetes/cluster/kubectl.sh run -i --expose --port=1234 --restart=Never http-server --image=wasmedge/example-wasi-http:latest --annotations="module.wasm.image/variant=compat-smart" --overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}' /http_server.wasm
 
-if [ -f $CONFIG_NAME ]
+if [ -f "$CONFIG_NAME" ]
 then
-    rm -rf $CONFIG_NAME
+    rm -rf "$CONFIG_NAME"
 fi
-cp $CONFIG_FOLDER/$CONFIG_NAME ./
+cp "$CONFIG_FOLDER"/"$CONFIG_NAME" ./
 
-sudo ./kubernetes/cluster/kubectl.sh apply -f $CONFIG_NAME
+sudo ./kubernetes/cluster/kubectl.sh apply -f "$CONFIG_NAME"
 
-echo -e "Pulling image from the docker hub..."
+echo -e "Pulling image from the docker hub...\n"
 sleep 60
 
 sudo ./kubernetes/cluster/kubectl.sh get pod --all-namespaces -o wide
@@ -43,6 +41,6 @@ curl -d "name=WasmEdge" -X POST http://127.0.0.1:1234
 echo -e "\n\nFinished\n\n"
 
 # Clean up
-echo -e "Cleaning up ..."
-rm -rf $CONFIG_NAME
-echo -e "Done!"
+echo -e "Cleaning up ...\n"
+rm -rf "$CONFIG_NAME"
+echo -e "Done!\n"

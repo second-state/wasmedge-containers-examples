@@ -2,7 +2,6 @@
 
 export WASMEDGE_VERSION=""
 export CRUN_VERSION=""
-export ZH="FALSE"
 
 for opt in "$@"; do
   case $opt in
@@ -12,10 +11,6 @@ for opt in "$@"; do
       ;;
     -c=*|--crun=*)
       export CRUN_VERSION="${opt#*=}"
-      shift
-      ;;
-    --zh=*)
-      export ZH="${opt#*=}"
       shift
       ;;
     *)
@@ -42,10 +37,6 @@ sudo systemctl daemon-reload
 # change containerd conf to use crun as default
 sudo mkdir -p /etc/containerd/
 sudo bash -c "containerd config default > /etc/containerd/config.toml"
-if [[ "$ZH" = "TRUE" ]]; then
-    echo -e "Use ZH mirror"
-    sudo sed -i 's/k8s.gcr.io\/pause:3.5/mirrorgooglecontainers\/pause:3.5/g' /etc/containerd/config.toml
-fi
 wget https://raw.githubusercontent.com/second-state/wasmedge-containers-examples/main/containerd/containerd_config.diff
 sudo patch -d/ -p0 < containerd_config.diff
 sudo systemctl start containerd
@@ -63,7 +54,7 @@ if [[ "$WASMEDGE_VERSION" = "" ]]; then
     sudo ./install.sh --path="/usr/local"
 else
     echo -e "Use WasmEdge: $WASMEDGE_VERSION"
-    sudo ./install.sh --path="/usr/local" --version=$WASMEDGE_VERSION
+    sudo ./install.sh --path="/usr/local" --version="$WASMEDGE_VERSION"
 fi
 
 rm -rf install.sh
@@ -76,12 +67,12 @@ if [[ "$CRUN_VERSION" = "" ]]; then
 else
     echo -e "Use Crun: $CRUN_VERSION"
     echo -e "Downloading crun-${CRUN_VERSION}.tar.gz"
-    wget https://github.com/containers/crun/releases/download/${CRUN_VERSION}/crun-${CRUN_VERSION}.tar.gz
-    tar --no-overwrite-dir -xzf crun-${CRUN_VERSION}.tar.gz
-    mv crun-${CRUN_VERSION} crun
+    wget https://github.com/containers/crun/releases/download/"${CRUN_VERSION}"/crun-"${CRUN_VERSION}".tar.gz
+    tar --no-overwrite-dir -xzf crun-"${CRUN_VERSION}".tar.gz
+    mv crun-"${CRUN_VERSION}" crun
 fi
 
-cd crun
+cd crun || exit
 ./autogen.sh
 ./configure --with-wasmedge
 make
