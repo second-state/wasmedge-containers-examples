@@ -1,0 +1,37 @@
+name: k8s kwasm http server
+
+concurrency:
+  group: k8s-kwasm-server-${{ github.head_ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'info'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: "0 0 */1 * *"
+
+jobs:
+  k8s_kwasm_server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: helm/kind-action@v1.4.0
+      - run: |
+          helm repo add kwasm http://kwasm.sh/kwasm-operator/
+          helm repo update
+          helm install -n kwasm --create-namespace kwasm kwasm/kwasm-operator
+          kubectl annotate node --all kwasm.sh/kwasm-node=true
+          kubectl apply -f kwasm/http-server/http_server_application.yaml
+          sleep 30
+          kubectl port-forward service/demo-service 8080 &
+          sleep 10
+          curl -d "name=WasmEdge" -X POST http://localhost:8080
+          echo

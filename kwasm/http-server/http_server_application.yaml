@@ -1,0 +1,41 @@
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata:
+  name: crun
+handler: crun
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demo-app
+  template:
+    metadata:
+      labels:
+        app: demo-app
+      annotations:
+        module.wasm.image/variant: compat-smart
+    spec:
+      containers:
+      - name: demo-container
+        image: wasmedge/example-wasi-http:latest
+        ports:
+        - containerPort: 1234
+      runtimeClassName: crun
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: demo-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 1234
