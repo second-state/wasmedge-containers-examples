@@ -13,8 +13,12 @@ on:
         default: 'info'
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
   schedule:
     - cron: "0 0 */1 * *"
 
@@ -23,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        crun: ["1.6", "1.7", "1.7.1", "1.7.2"]
+        crun: ["1.8.4"]
         wasmedge: ["0.11.0", "0.11.1", "0.11.2"]
         tag: ["latest"]
         latest: [false]
@@ -39,7 +43,7 @@ jobs:
     name: WasmEdge:${{ matrix.wasmedge }},crun:${{ matrix.crun }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
