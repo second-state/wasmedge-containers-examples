@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         crun: ["1.8.4"]
-        wasmedge: ["0.11.0", "0.11.1", "0.11.2"]
+        wasmedge: ["0.11.0", "0.11.1", "0.11.2", "0.12.1"]
         config: ["container_wasi.json"]
         tag: ["latest"]
         latest: [false]
