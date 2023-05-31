@@ -72,7 +72,7 @@ Use the following commands to install CRI-O on your system.
 
 echo -e "Starting installation ..."
 sudo apt update
-export VERSION="1.6.8"
+export VERSION="1.7.1"
 echo -e "Version: $VERSION"
 echo -e "Installing libseccomp2 ..."
 sudo apt install -y libseccomp2

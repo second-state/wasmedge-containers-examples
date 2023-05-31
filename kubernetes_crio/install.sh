@@ -11,7 +11,7 @@ echo -e "Defaults        secure_path=\"/usr/local/go/bin:/usr/local/sbin:/usr/lo
 echo -e "Cloning Kubernetes ..."
 git clone https://github.com/kubernetes/kubernetes.git
 cd kubernetes/
-git checkout v1.25.0
+git checkout v1.27.2
 cd ../
 echo -e "Installing etcd"
 sudo apt-get install -y net-tools

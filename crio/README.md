@@ -55,7 +55,7 @@ Use the following commands to install CRI-O on your system.
 
 ```bash
 export OS="xUbuntu_20.04"
-export VERSION="1.25"
+export VERSION="1.27"
 apt update
 apt install -y libseccomp2 || sudo apt update -y libseccomp2
 echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
