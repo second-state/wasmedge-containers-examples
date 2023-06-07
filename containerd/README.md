@@ -88,10 +88,10 @@ image from Docker hub using containerd tools.
 sudo ctr i pull docker.io/wasmedge/example-wasi:latest
 ```
 
-We can run the example in just one line with ctr (the containerd cli) 
+We can run the example in just one line with ctr (the containerd cli)
 
 ```bash
-sudo ctr run --rm --runc-binary crun --runtime io.containerd.runc.v2 --label module.wasm.image/variant=compat-smart docker.io/wasmedge/example-wasi:latest wasm-example /wasi_example_main.wasm 50000000 Hello WasmEdge
+sudo ctr run --rm --runc-binary crun --runtime io.containerd.runc.v2 --platform wasi/wasm docker.io/wasmedge/example-wasi:latest wasm-example /wasi_example_main.wasm 50000000 Hello WasmEdge
 ```
 
 ## Bonus: nerdctl
@@ -104,7 +104,7 @@ export NERD_VERSION="0.14.0"
 wget -O- https://github.com/containerd/nerdctl/releases/download/v$NERD_VERSION/nerdctl-$NERD_VERSION-linux-amd64.tar.gz |tar xzf -
 
 # Create the POD. Output will be different from example.
-sudo ./nerdctl run -d --runtime crun --label module.wasm.image/variant=compat-smart --name wasm-example docker.io/wasmedge/example-wasi:latest
+sudo ./nerdctl run -d --runtime crun --platform wasi/wasm --name wasm-example docker.io/wasmedge/example-wasi:latest
 WARN[0000] kernel support for cgroup blkio weight missing, weight discarded
 495ac5a521052bd42dca109f549140d573ad9d114ce3e1d15896156430b95c8f
 

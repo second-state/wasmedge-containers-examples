@@ -18,7 +18,7 @@
            base_runtime_spec = ""
            container_annotations = []
 -          pod_annotations = []
-+          pod_annotations = ["*.wasm.*", "wasm.*", "module.wasm.image/*", "*.module.wasm.image", "module.wasm.image/variant.*"]
++          pod_annotations = ["*.wasm.*", "wasm.*", "module.wasm.image/*", "*.module.wasm.image"]
            privileged_without_host_devices = false
            runtime_engine = ""
            runtime_root = ""

@@ -11,9 +11,6 @@
   "working_dir": "/",
   "envs": [],
   "tier": "backend",
-  "annotations": {
-    "module.wasm.image/variant": "compat-smart"
-  },
   "log_path": "",
   "stdin": false,
   "stdin_once": false,

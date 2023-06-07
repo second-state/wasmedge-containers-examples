@@ -14,8 +14,7 @@
     "tier": "backend"
   },
   "annotations": {
-    "pod": "podsandbox1",
-    "module.wasm.image/variant": "compat-smart"
+    "pod": "podsandbox1"
   },
   "log_path": "",
   "stdin": false,

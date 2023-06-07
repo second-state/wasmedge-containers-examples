@@ -3,16 +3,11 @@ set -x # Enable verbose for the debug information
 export KUBERNETES_PROVIDER=local
 export WASM_IMAGE=docker.io/wasmedge/example-wasi
 export WASM_IMAGE_TAG=latest
-export VARIANT=compat-smart
 
 for opt in "$@"; do
   case $opt in
     --tag=*)
       export WASM_IMAGE_TAG="${opt#*=}"
-      shift
-      ;;
-    --variant=*)
-      export VARIANT="${opt#*=}"
       shift
       ;;
     *)
@@ -29,7 +24,6 @@ sudo ./kubernetes/cluster/kubectl.sh
 sudo ./kubernetes/cluster/kubectl.sh cluster-info
 sudo ./kubernetes/cluster/kubectl.sh run -i --restart=Never wasi-demo \
 	--image=$WASM_IMAGE:$WASM_IMAGE_TAG \
-	--annotations="module.wasm.image/variant=$VARIANT" \
 	--overrides='{"kind":"Pod", "apiVersion":"v1", "spec": {"hostNetwork": true}}' /wasi_example_main.wasm 50000000
 
 echo -e "Wait 60s"

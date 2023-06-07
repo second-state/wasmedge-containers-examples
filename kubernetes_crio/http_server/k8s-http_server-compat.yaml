@@ -3,13 +3,11 @@ kind: Pod
 metadata:
   name: http-server
   namespace: default
-  annotations:
-    module.wasm.image/variant: compat
 spec:
   hostNetwork: true
   containers:
   - name: http-server
-    image: wasmedge/example-wasi-http:compat
+    image: wasmedge/example-wasi-http:latest
     command: [ "/http_server.wasm" ]
     ports:
     - containerPort: 1234

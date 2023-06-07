@@ -124,7 +124,7 @@ Replace the runc with crun
         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.crun]
           base_runtime_spec = ""
           container_annotations = []
-          pod_annotations = ["*.wasm.*", "wasm.*", "module.wasm.image/*", "*.module.wasm.image", "module.wasm.image/variant.*"]
+          pod_annotations = ["*.wasm.*", "wasm.*", "module.wasm.image/*", "*.module.wasm.image"]
 
 ...
           [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]

@@ -1,16 +1,11 @@
 #!/bin/bash
 export WASM_IMAGE=docker.io/wasmedge/example-wasi-http
 export WASM_IMAGE_TAG=latest
-export WASM_VARIANT=compat-smart
 
 for opt in "$@"; do
   case $opt in
     --tag=*)
       export WASM_IMAGE_TAG="${opt#*=}"
-      shift
-      ;;
-    --variant=*)
-      export WASM_VARIANT="${opt#*=}"
       shift
       ;;
     *)
@@ -22,7 +17,6 @@ sudo ctr i pull $WASM_IMAGE:$WASM_IMAGE_TAG
 echo -e "Creating POD ..."
 nohup sudo ctr run --rm --net-host --runc-binary crun \
 	--runtime io.containerd.runc.v2 \
-	--label module.wasm.image/variant=$WASM_VARIANT \
 	$WASM_IMAGE:$WASM_IMAGE_TAG http-server-example /http_server.wasm &
 echo -e "Sleeping for 10 seconds"
 sleep 10
