@@ -1,0 +1,79 @@
+name: k8s containerd WASI-NN test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'info'
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
+  schedule:
+    - cron: "0 0 */1 * *"
+
+jobs:
+  run:
+    runs-on: ubuntu-20.04
+    name: Run WASI-NN plugin example
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install apt-get packages
+        run: |
+          sudo ACCEPT_EULA=Y apt-get update
+          sudo ACCEPT_EULA=Y apt-get upgrade
+          sudo ACCEPT_EULA=Y apt-get install git wget
+
+      - name: Install containerd, WasmEdge, and crun
+        run: |
+          bash k8s_containerd_wasi_nn/install_containerd.sh
+
+      - name: Installing and starting k8s
+        run: |
+          bash k8s_containerd_wasi_nn/install_k8s.sh > k8s.log 2>&1
+
+      - name: Sleep for 600s
+        run: sleep 600s
+        shell: bash
+
+      - name: Dump the log of k8s setup
+        run: |
+          cat k8s.log
+
+      - name: Run WasmEdge in k8s
+        continue-on-error: true
+        run: |
+          bash k8s_containerd_wasi_nn/wasi_nn_application.sh > dump.log 2>&1
+
+      - name: Display crun and wasmedge version
+        run: |
+          crun --version
+          wasmedge --version
+
+      - name: Dump the log of execution
+        run: |
+          cat dump.log
+
+      - name: Check the result
+        run: |
+          if grep -q "Aix" dump.log
+          then
+            echo -e "Execution Success!"
+          else
+            echo -e "Execution Fail! Please check the above log for details"
+            exit 1
+          fi
