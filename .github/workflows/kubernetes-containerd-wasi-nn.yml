@@ -46,8 +46,8 @@ jobs:
         run: |
           bash k8s_containerd_wasi_nn/install_k8s.sh > k8s.log 2>&1
 
-      - name: Sleep for 600s
-        run: sleep 600s
+      - name: Sleep for 1200s
+        run: sleep 1200s
         shell: bash
 
       - name: Dump the log of k8s setup

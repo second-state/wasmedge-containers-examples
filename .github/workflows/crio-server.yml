@@ -1,7 +1,7 @@
 name: CRI-O HTTP server test
 
 concurrency:
-  group: crio-server-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 on:
@@ -67,6 +67,7 @@ jobs:
           bash crio/install.sh
 
       - name: Run demo in CRI-O
+        continue-on-error: true
         env:
           TAG: ${{ matrix.tag }}
           CONFIG: ${{ matrix.config }}

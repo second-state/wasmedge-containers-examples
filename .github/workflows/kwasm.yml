@@ -1,7 +1,7 @@
 name: k8s kwasm test
 
 concurrency:
-  group: k8s-kwasm-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 on:
