@@ -1,4 +1,4 @@
-name: k8s containerd test
+name: k8s containerd WASI-NN test
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
@@ -23,24 +23,9 @@ on:
     - cron: "0 0 */1 * *"
 
 jobs:
-  k8s_containerd:
-    strategy:
-      fail-fast: false
-      matrix:
-        crun: ["1.8.4"]
-        wasmedge: ["0.11.0", "0.11.1", "0.11.2", "0.12.1"]
-        tag: ["latest"]
-        latest: [false]
-        variant: ["compat-smart"]
-        include:
-          - name: "WasmEdge latest release, Crun master"
-            latest: true
-            wasmedge: "latest"
-            crun: "latest"
-            tag: "latest"
-            variant: "compat-smart"
+  run:
     runs-on: ubuntu-20.04
-    name: WasmEdge:${{ matrix.wasmedge }},crun:${{ matrix.crun }}
+    name: Run WASI-NN plugin example
 
     steps:
       - uses: actions/checkout@v3
@@ -53,22 +38,13 @@ jobs:
           sudo ACCEPT_EULA=Y apt-get upgrade
           sudo ACCEPT_EULA=Y apt-get install git wget
 
-      - name: Install containerd and crun (specified version)
-        if: ${{ ! matrix.latest }}
-        env:
-          WASMEDGE_VERSION: ${{ matrix.wasmedge }}
-          CRUN_VERSION: ${{ matrix.crun }}
+      - name: Install containerd, WasmEdge, and crun
         run: |
-          bash containerd/install.sh --wasmedge=$WASMEDGE_VERSION --crun=$CRUN_VERSION
-
-      - name: Install containerd and crun (latest version)
-        if: ${{ matrix.latest }}
-        run: |
-          bash containerd/install.sh
+          bash k8s_containerd_wasi_nn/install_containerd.sh
 
       - name: Installing and starting k8s
         run: |
-          bash kubernetes_containerd/install.sh > k8s.log 2>&1
+          bash k8s_containerd_wasi_nn/install_k8s.sh > k8s.log 2>&1
 
       - name: Sleep for 1200s
         run: sleep 1200s
@@ -80,11 +56,8 @@ jobs:
 
       - name: Run WasmEdge in k8s
         continue-on-error: true
-        env:
-          TAG: ${{ matrix.tag }}
-          VARIANT: ${{ matrix.variant }}
         run: |
-          bash kubernetes_containerd/simple_wasi_application.sh --tag=$TAG --variant=$VARIANT > dump.log 2>&1
+          bash k8s_containerd_wasi_nn/wasi_nn_application.sh > dump.log 2>&1
 
       - name: Display crun and wasmedge version
         run: |
@@ -97,7 +70,8 @@ jobs:
 
       - name: Check the result
         run: |
-          if grep -q "Printed from wasi: This is from a main function" dump.log; then
+          if grep -q "Aix" dump.log
+          then
             echo -e "Execution Success!"
           else
             echo -e "Execution Fail! Please check the above log for details"

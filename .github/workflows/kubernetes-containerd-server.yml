@@ -1,7 +1,7 @@
 name: k8s-containerd http server
 
 concurrency:
-  group: k8s-containerd-server-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 on:
@@ -79,6 +79,7 @@ jobs:
           cat k8s.log
 
       - name: Run WasmEdge in k8s
+        continue-on-error: true
         env:
           TAG: ${{ matrix.tag }}
           VARIANT: ${{ matrix.variant }}

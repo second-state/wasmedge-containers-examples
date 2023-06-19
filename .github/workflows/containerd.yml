@@ -1,7 +1,7 @@
 name: Containerd test
 
 concurrency:
-  group: containerd-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 on:
@@ -67,6 +67,7 @@ jobs:
           bash containerd/install.sh
 
       - name: Run demo in containerd
+        continue-on-error: true
         env:
           TAG: ${{ matrix.tag }}
           VARIANT: ${{ matrix.variant }}
