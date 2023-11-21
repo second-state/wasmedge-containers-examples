@@ -3,21 +3,6 @@ export WASM_IMAGE=docker.io/wasmedge/example-wasi
 export WASM_IMAGE_TAG=latest
 export WASM_VARIANT=compat-smart
 
-for opt in "$@"; do
-  case $opt in
-    --tag=*)
-      export WASM_IMAGE_TAG="${opt#*=}"
-      shift
-      ;;
-    --variant=*)
-      export WASM_VARIANT="${opt#*=}"
-      shift
-      ;;
-    *)
-      ;;
-  esac
-done
-
 sudo ctr i pull $WASM_IMAGE:$WASM_IMAGE_TAG
 echo -e "Creating POD ..."
 sudo ctr run --rm --runc-binary crun \

@@ -5,31 +5,16 @@ export CONFIG_FOLDER=$( dirname -- "$0"; )
 export SANDBOX_CONFIG_NAME=sandbox_config.json
 export CONTAINER_CONFIG_NAME=container_wasi.json
 
-for opt in "$@"; do
-  case $opt in
-    --tag=*)
-      export WASM_IMAGE_TAG="${opt#*=}"
-      shift
-      ;;
-    --config=*)
-      export CONTAINER_CONFIG_NAME="${opt#*=}"
-      shift
-      ;;
-    *)
-      ;;
-  esac
-done
-
 echo -e "Pull images"
 sudo crictl pull $WASM_IMAGE:$WASM_IMAGE_TAG
 
 echo -e "Copy configuration files"
 if [ -f $SANDBOX_CONFIG_NAME ]
-then 
+then
     rm -rf $SANDBOX_CONFIG_NAME
 fi
 if [ -f $CONTAINER_CONFIG_NAME ]
-then 
+then
     rm -rf $CONTAINER_CONFIG_NAME
 fi
 
