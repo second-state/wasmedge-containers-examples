@@ -29,7 +29,7 @@ then
     rm -rf $SANDBOX_CONFIG_NAME
 fi
 if [ -f $CONTAINER_CONFIG_NAME ]
-then 
+then
     rm -rf $CONTAINER_CONFIG_NAME
 fi
 cp $CONFIG_FOLDER/../$SANDBOX_CONFIG_NAME ./
