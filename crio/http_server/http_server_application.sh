@@ -5,21 +5,6 @@ export CONFIG_FOLDER=$( dirname -- "$0"; )
 export SANDBOX_CONFIG_NAME=sandbox_config.json
 export CONTAINER_CONFIG_NAME=container_http_server.json
 
-for opt in "$@"; do
-  case $opt in
-    --tag=*)
-      export WASM_IMAGE_TAG="${opt#*=}"
-      shift
-      ;;
-    --config=*)
-      export CONTAINER_CONFIG_NAME="${opt#*=}"
-      shift
-      ;;
-    *)
-      ;;
-  esac
-done
-
 echo -e "Pull images"
 sudo crictl pull $WASM_IMAGE:$WASM_IMAGE_TAG
 

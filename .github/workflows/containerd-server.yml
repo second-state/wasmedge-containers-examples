@@ -27,18 +27,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        crun: ["1.8.4"]
-        wasmedge: ["0.11.0", "0.11.1", "0.11.2", "0.12.1"]
-        tag: ["latest"]
+        crun: ["1.11.2"]
+        wasmedge: ["0.12.1", "0.13.5"]
         latest: [false]
-        variant: ["compat-smart"]
         include:
           - name: "WasmEdge latest release, Crun master"
             latest: true
-            tag: "latest"
             wasmedge: "latest"
             crun: "latest"
-            variant: "compat-smart"
     runs-on: ubuntu-20.04
     name: WasmEdge:${{ matrix.wasmedge }},crun:${{ matrix.crun }}
 
@@ -68,11 +64,8 @@ jobs:
 
       - name: Run demo in containerd
         continue-on-error: true
-        env:
-          TAG: ${{ matrix.tag }}
-          VARIANT: ${{ matrix.variant }}
         run: |
-          bash containerd/http_server/http_server_application.sh --tag=$TAG --variant=$VARIANT > dump.log 2>&1
+          bash containerd/http_server/http_server_application.sh > dump.log 2>&1
 
       - name: Display crun and wasmedge version
         run: |
