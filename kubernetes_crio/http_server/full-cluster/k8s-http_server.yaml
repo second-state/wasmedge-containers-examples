@@ -3,8 +3,6 @@ kind: Pod
 metadata:
   name: http-server
   namespace: default
-  annotations:
-    module.wasm.image/variant: compat-smart
 spec:
   hostNetwork: true
   containers:
