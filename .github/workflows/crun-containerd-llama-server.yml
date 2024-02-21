@@ -1,0 +1,91 @@
+name: Run containerd + crun + LLAMA service test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'info'
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
+  schedule:
+    - cron: "0 0 */1 * *"
+
+jobs:
+  run:
+    runs-on: ubuntu-20.04
+    name: Run ggml plugin example
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install apt-get packages
+        run: |
+          sudo ACCEPT_EULA=Y apt-get update
+          sudo ACCEPT_EULA=Y apt-get upgrade
+          sudo ACCEPT_EULA=Y apt-get install git wget jq
+
+      - name: Install containerd, WasmEdge, and crun with supprt of plugins and nn-preoload
+        run: |
+          sed 's|https://github.com/containers/crun|-b enable-wasmedge-plugin https://github.com/second-state/crun|g' containerd/install.sh | bash
+
+      - name: Installing wasi_nn-ggml plugin and copy sys's dependencies into same path for container environment
+        run: |
+          curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- --plugins wasi_nn-ggml
+          wget -qO- https://raw.githubusercontent.com/second-state/runwasi/main/release/utils/copy_sys_dependencies.sh | bash -s $HOME/.wasmedge/plugin/libwasmedgePluginWasiNN.so $HOME/.wasmedge/plugin/
+
+      - name: Download llm model
+        run: |
+          curl -LO https://huggingface.co/second-state/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q5_K_M.gguf
+
+      - name: Download wasm application
+        run: |
+          sudo ctr image pull ghcr.io/captainvincent/runwasi-demo:llama-api-server
+
+      - name: Run llm api service with crun
+        run: |
+          nohup sudo ctr run --rm --net-host --runc-binary crun --runtime io.containerd.runc.v2 \
+            --mount type=bind,src=$HOME/.wasmedge/plugin/,dst=/opt/containerd/lib,options=bind:ro \
+            --mount type=bind,src=$PWD,dst=/resource,options=bind:ro \
+            --env WASMEDGE_PLUGIN_PATH=/opt/containerd/lib \
+            --env WASMEDGE_WASINN_PRELOAD=default:GGML:CPU:/resource/llama-2-7b-chat.Q5_K_M.gguf \
+            --label module.wasm.image/variant=compat-smart ghcr.io/captainvincent/runwasi-demo:llama-api-server ggml \
+            /app.wasm -p llama-2-chat &
+          sleep 3
+
+      - name: Test API server
+        run: |
+          curl -X POST http://localhost:8080/v1/models -H 'accept:application/json'
+          curl -X POST http://localhost:8080/v1/chat/completions -H 'accept:application/json' -H 'Content-Type: application/json' -d '{"messages":[{"role":"system", "content": "You are a helpful assistant."}, {"role":"user", "content": "Who is Robert Oppenheimer?"}], "model":"llama-2-chat"}' | jq . > result.json
+
+      - name: Dump the log of execution
+        run: |
+          cat result.json
+
+      - name: Checking result
+        run: |
+          if jq -e '. | tostring | contains("chat.completion")' result.json >/dev/null; then
+              echo "Pattern found in the JSON file."
+          else
+              echo "Pattern not found in the JSON file."
+              exit 1
+          fi
+
+      - name: Display crun and wasmedge version
+        run: |
+          sudo ctr --version
+          crun --version
+          wasmedge --version
