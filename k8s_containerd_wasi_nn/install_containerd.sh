@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export WASMEDGE_VERSION="0.12.1"
+export WASMEDGE_VERSION="0.13.5"
 
 echo -e "Starting installation ..."
 sudo apt update
