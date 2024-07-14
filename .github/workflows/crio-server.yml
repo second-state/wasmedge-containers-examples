@@ -27,8 +27,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        crun: ["1.8.4"]
-        wasmedge: ["0.11.0", "0.11.1", "0.11.2", "0.12.1"]
+        crun: ["1.15"]
+        wasmedge: ["0.13.5", "0.14.0"]
         tag: ["latest"]
         latest: [false]
         config: ["container_http_server.json"]
